@@ -9,7 +9,7 @@ import (
 	"github.com/luisrojas17/ecommerce/models"
 )
 
-func Create(user models.User) error {
+func CreateUser(user models.User) error {
 
 	fmt.Println("Starting to insert user in database...")
 
@@ -31,4 +31,42 @@ func Create(user models.User) error {
 	fmt.Println("User was inserted in database.")
 
 	return nil
+}
+
+func IsAdmin(userId string) (bool, string) {
+	fmt.Printf("Validating if user [%s] is admin", userId)
+
+	err := Connect()
+	if err != nil {
+		return false, err.Error()
+	}
+
+	defer Close()
+
+	statement := "SELECT 1 FROM USERS WHERE USER_UUID='" + userId + "' AND USER_STATUS = 0"
+
+	fmt.Println("Executing statement: ", statement)
+
+	rows, err := Connection.Query(statement)
+
+	if err != nil {
+		return false, err.Error()
+	}
+
+	var value string
+
+	// To start in first row.
+	rows.Next()
+
+	// Assign the value into variable
+	rows.Scan(&value)
+
+	fmt.Printf("The user [%s] is admin [%t]", userId, (value == "1"))
+
+	if value == "1" {
+		return true, "The user is administrator."
+	} else {
+		return false, "The user is not administrator."
+	}
+
 }

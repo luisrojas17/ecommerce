@@ -64,6 +64,20 @@ func Execute(statement string) error {
 
 }
 
+/*func Execute(statement string) (*sql.Rows, error) {
+
+	fmt.Println(statement)
+
+	rows, err := Connection.Query(statement)
+
+	if err != nil {
+		return nil, err
+	}
+
+	return rows, nil
+
+}*/
+
 func buildConnectionString(secret models.Secret) string {
 	var user, pass, dbEndpoint, dbName string
 

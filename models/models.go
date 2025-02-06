@@ -13,3 +13,9 @@ type User struct {
 	Email string `json:"UserEmail"`
 	Uuid  string `json:"UserUUID"`
 }
+
+type Category struct {
+	Id   int    `json:"categID"`
+	Name string `json:"categName"`
+	Path string `json:"categPath"`
+}

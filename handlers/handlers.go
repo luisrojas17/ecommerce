@@ -7,6 +7,7 @@ import (
 	"github.com/aws/aws-lambda-go/events"
 
 	"github.com/luisrojas17/ecommerce/auth"
+	"github.com/luisrojas17/ecommerce/routers"
 )
 
 // Returns the HTTP status code and message to describe the error.
@@ -100,6 +101,11 @@ func Products(body string, path string, method string, user string, id int, requ
 }
 
 func Categories(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
+
+	switch method {
+	case "POST":
+		return routers.InsertCategory(body, user)
+	}
 
 	return 400, "Method Invalid"
 }
