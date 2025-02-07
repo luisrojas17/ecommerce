@@ -13,7 +13,7 @@ import (
 // Returns the HTTP status code and message to describe the error.
 func Handler(path string, method string, body string, headers map[string]string, request events.APIGatewayV2HTTPRequest) (int, string) {
 
-	fmt.Println("Processing path: " + path + " for method: " + method)
+	fmt.Println("Processing request from path: " + path + " for method: " + method)
 
 	id := request.PathParameters["id"]
 
@@ -21,38 +21,43 @@ func Handler(path string, method string, body string, headers map[string]string,
 	idn, _ := strconv.Atoi(id)
 
 	// Check if token is valid and it had not expired.
-	ok, statusCode, user := authorize(path, method, body, headers)
+	// Make sure that the user is using the access_token in order to the validation can get the Username attribute.
+	ok, statusCode, user := authorize(path, method, headers)
 
 	if !ok {
 		return statusCode, user
 	}
 
-	switch path[0:4] {
+	// To Do: process path in order to split from token "/" instead of use UrlPrefix variable.
+
+	switch path {
 
 	case "user":
 		return Users(body, path, method, user, id, request)
 
-	case "prod":
+	case "product":
 		return Products(body, path, method, user, idn, request)
 
-	case "stoc":
+	case "stock":
 		return Stock(body, path, method, user, idn, request)
 
-	case "addr":
+	case "address":
 		return Address(body, path, method, user, idn, request)
 
-	case "cate":
+	case "category":
 		return Categories(body, path, method, user, idn, request)
 
-	case "orde":
+	case "order":
 		return Orders(body, path, method, user, idn, request)
 	}
+
+	fmt.Println("The request couldn't be processing.")
 
 	return 400, "Method Invalid."
 
 }
 
-func authorize(path string, method string, body string, headers map[string]string) (bool, int, string) {
+func authorize(path string, method string, headers map[string]string) (bool, int, string) {
 
 	// For this options the API does not have to validate the token.
 	if (path == "product" && method == "GET") ||
@@ -62,12 +67,14 @@ func authorize(path string, method string, body string, headers map[string]strin
 	}
 
 	// Get the token from headers.
+	// The token to use must be the access_token in order to the validation process can get the Username attribute.
 	token := headers["authorization"]
 	if len(token) == 0 {
-		return false, 401, "The token is mandatory to authenticate the request.s"
+		return false, 401, "The token is mandatory to authenticate the requests."
 	}
 
 	// Validate token.
+	// If the token is validated correctly, the msg variable will contain Username.
 	ok, err, msg := auth.Validate(token)
 
 	if !ok {
@@ -84,7 +91,7 @@ func authorize(path string, method string, body string, headers map[string]strin
 		}
 	}
 
-	fmt.Println("Token Ok.")
+	fmt.Println("Token is Ok.")
 
 	return true, 200, msg
 

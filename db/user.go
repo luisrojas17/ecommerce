@@ -34,7 +34,7 @@ func CreateUser(user models.User) error {
 }
 
 func IsAdmin(userId string) (bool, string) {
-	fmt.Printf("Validating if user [%s] is admin", userId)
+	fmt.Printf("Validating if user [%s] is admin.", userId)
 
 	err := Connect()
 	if err != nil {
@@ -43,7 +43,7 @@ func IsAdmin(userId string) (bool, string) {
 
 	defer Close()
 
-	statement := "SELECT 1 FROM USERS WHERE USER_UUID='" + userId + "' AND USER_STATUS = 0"
+	statement := "SELECT 1 FROM users WHERE User_UUID='" + userId + "' AND User_Status = 0"
 
 	fmt.Println("Executing statement: ", statement)
 
@@ -61,12 +61,12 @@ func IsAdmin(userId string) (bool, string) {
 	// Assign the value into variable
 	rows.Scan(&value)
 
-	fmt.Printf("The user [%s] is admin [%t]", userId, (value == "1"))
+	fmt.Printf("The user [%s] is admin [%t].\n", userId, (value == "1"))
 
 	if value == "1" {
-		return true, "The user is administrator."
+		return true, "The user " + userId + " is administrator."
 	} else {
-		return false, "The user is not administrator."
+		return false, "The user" + userId + " is not administrator."
 	}
 
 }

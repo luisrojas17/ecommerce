@@ -51,7 +51,7 @@ func Execute(ctx context.Context, request events.APIGatewayV2HTTPRequest) (*even
 	// Connecto to database
 	db.Connect()
 
-	//
+	// Handled the request
 	status, message := handlers.Handler(path, method, body, header, request)
 
 	// We specify headers map for response

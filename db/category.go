@@ -21,7 +21,7 @@ func CreateCategory(category models.Category) (int64, error) {
 
 	defer Close()
 
-	statement := "INSERT INTO CATEGORY (Categ_Name, Categ_Path) VALUES('" + category.Name + "', '" + category.Path + "')"
+	statement := "INSERT INTO category (Categ_Name, Categ_Path) VALUES('" + category.Name + "', '" + category.Path + "')"
 
 	var result sql.Result
 	result, err = Connection.Exec(statement)

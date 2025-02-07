@@ -36,7 +36,7 @@ func GetSecret(secretName string) (models.Secret, error) {
 	// Convert Json structure to struct model
 	json.Unmarshal([]byte(*key.SecretString), &secretModel)
 
-	fmt.Printf("Secret name [%s] was read successfully.", secretName)
+	fmt.Printf("\nSecret name [%s] was read successfully.", secretName)
 
 	return secretModel, nil
 }

@@ -89,7 +89,7 @@ func buildConnectionString(secret models.Secret) string {
 	//connectionString := fmt.Sprintf("%s:%s@tcp(%s)/%s?allowCleartextPassword=true", user, pass, dbEndpoint, dbName)
 	connectionString := fmt.Sprintf("%s:%s@tcp(%s)/%s", user, pass, dbEndpoint, dbName)
 
-	fmt.Println("Connection string is: ", connectionString)
+	fmt.Println("\nConnection string is: ", connectionString)
 
 	return connectionString
 }

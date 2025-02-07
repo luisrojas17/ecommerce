@@ -2,6 +2,7 @@ package routers
 
 import (
 	"encoding/json"
+	"fmt"
 	"strconv"
 
 	"github.com/luisrojas17/ecommerce/db"
@@ -27,6 +28,7 @@ func InsertCategory(body string, User string) (int, string) {
 
 	isAdmin, msg := db.IsAdmin(User)
 	if !isAdmin {
+		fmt.Println("Only admin users can create new catagories.")
 		return 400, msg
 	}
 

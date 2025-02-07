@@ -21,7 +21,8 @@ type Token struct {
 	Username  string
 }
 
-// This funci vaidate the token. If the token is not valid
+// This function vaidate the token. If the token is not valid
+// The token expected must be access_token because this contains the Username attribute.
 func Validate(token string) (
 	bool,
 	error,
@@ -39,7 +40,8 @@ func Validate(token string) (
 		return false, nil, message
 	}
 
-	userInfo, err := base64.StdEncoding.DecodeString(tokenItems[1])
+	//userInfo, err := base64.StdEncoding.DecodeString(tokenItems[1])
+	userInfo, err := base64.RawStdEncoding.DecodeString(tokenItems[1])
 
 	if err != nil {
 		errorMessage := err.Error()
@@ -69,6 +71,7 @@ func Validate(token string) (
 		return false, err, errorMessage
 	}
 
+	// Get Username from access_token.
 	return true, nil, string(t.Username)
 
 }
