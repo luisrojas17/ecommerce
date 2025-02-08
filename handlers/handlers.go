@@ -24,7 +24,7 @@ func Handler(path string, method string, body string, headers map[string]string,
 	idn, _ := strconv.Atoi(id)
 
 	// Check if token is valid and it had not expired.
-	// Make sure that the user is using the access_token in order to the validation can get the Username attribute.
+	// Make sure to use the access_token in order to the validation can get the Username attribute.
 	ok, statusCode, user := authorize(path, method, headers)
 
 	if !ok {
@@ -120,6 +120,8 @@ func Categories(body string, path string, method string, user string, id int, re
 		return routers.InsertCategory(body, user)
 	case "PUT":
 		return routers.UpdateCategory(body, user, id)
+	case "DELETE":
+		return routers.DeleteCategory(user, id)
 	}
 
 	return 400, METHOD_INVALID
