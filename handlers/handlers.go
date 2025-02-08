@@ -10,6 +10,8 @@ import (
 	"github.com/luisrojas17/ecommerce/routers"
 )
 
+const METHOD_INVALID = "Method Invalid."
+
 // Returns the HTTP status code and message to describe the error.
 func Handler(path string, method string, body string, headers map[string]string, request events.APIGatewayV2HTTPRequest) (int, string) {
 
@@ -53,7 +55,7 @@ func Handler(path string, method string, body string, headers map[string]string,
 
 	fmt.Println("The request couldn't be processing.")
 
-	return 400, "Method Invalid."
+	return 400, METHOD_INVALID
 
 }
 
@@ -99,12 +101,12 @@ func authorize(path string, method string, headers map[string]string) (bool, int
 
 func Users(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
 
-	return 400, "Method Invalid"
+	return 400, METHOD_INVALID
 }
 
 func Products(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 
-	return 400, "Method Invalid"
+	return 400, METHOD_INVALID
 }
 
 func Categories(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
@@ -112,22 +114,24 @@ func Categories(body string, path string, method string, user string, id int, re
 	switch method {
 	case "POST":
 		return routers.InsertCategory(body, user)
+	case "PUT":
+		return routers.UpdateCategory(body, user, id)
 	}
 
-	return 400, "Method Invalid"
+	return 400, METHOD_INVALID
 }
 
 func Stock(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 
-	return 400, "Method Invalid"
+	return 400, METHOD_INVALID
 }
 
 func Address(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 
-	return 400, "Method Invalid"
+	return 400, METHOD_INVALID
 }
 
 func Orders(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 
-	return 400, "Method Invalid"
+	return 400, METHOD_INVALID
 }

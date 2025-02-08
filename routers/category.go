@@ -39,3 +39,34 @@ func InsertCategory(body string, User string) (int, string) {
 
 	return 200, "{ categoryId: " + strconv.Itoa(int(result)) + " }"
 }
+
+func UpdateCategory(body string, User string, id int) (int, string) {
+
+	var category models.Category
+
+	// Convert json body to struct category
+	err := json.Unmarshal([]byte(body), &category)
+
+	if err != nil {
+		return 400, "It was an error to get category." + err.Error()
+	}
+
+	if len(category.Name) == 0 && len(category.Path) == 0 {
+		return 400, "You must specify category's name and category's path."
+	}
+
+	isAdmin, msg := db.IsAdmin(User)
+	if !isAdmin {
+		fmt.Println("Only admin users can create new catagories.")
+		return 400, msg
+	}
+
+	category.Id = id
+
+	err2 := db.UpdateCategory(category)
+	if err2 != nil {
+		return 400, "It was an error to update category [id: " + strconv.Itoa(id) + ", name: " + category.Name + "]." + err2.Error()
+	}
+
+	return 200, "Category [categID: " + strconv.Itoa(id) + ", categName: " + category.Name + ", categPath: " + category.Path + "] was updated successfully."
+}
