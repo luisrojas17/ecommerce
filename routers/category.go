@@ -5,19 +5,20 @@ import (
 	"fmt"
 	"strconv"
 
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/luisrojas17/ecommerce/db"
 	"github.com/luisrojas17/ecommerce/models"
 )
 
 // All functions defined in this file can only invoke by administrator users.
 
-func InsertCategory(body string, User string) (int, string) {
+func CreateCategory(body string, User string) (int, string) {
 
 	var category models.Category
 
 	err := json.Unmarshal([]byte(body), &category)
 	if err != nil {
-		return 400, "It was an error to get category." + err.Error()
+		return 400, "It was an error to get category. " + err.Error()
 	}
 
 	if len(category.Name) == 0 {
@@ -50,7 +51,7 @@ func UpdateCategory(body string, User string, id int) (int, string) {
 	err := json.Unmarshal([]byte(body), &category)
 
 	if err != nil {
-		return 400, "It was an error to get category." + err.Error()
+		return 400, "It was an error to get category. " + err.Error()
 	}
 
 	if len(category.Name) == 0 && len(category.Path) == 0 {
@@ -91,4 +92,36 @@ func DeleteCategory(User string, id int) (int, string) {
 	}
 
 	return 200, "CategoryId: " + strconv.Itoa(id) + " was deleted successfully."
+}
+
+func GetCategories(request events.APIGatewayV2HTTPRequest) (int, string) {
+
+	var err error
+	var CategId int
+	var Slug string
+
+	if len(request.QueryStringParameters["categId"]) > 0 {
+		CategId, err = strconv.Atoi(request.QueryStringParameters["categId"])
+
+		if err != nil {
+			return 412, "The category id must be a numeric value greater than 0. " + err.Error()
+		}
+	} else {
+		if len(request.QueryStringParameters["slug"]) > 0 {
+			Slug = request.QueryStringParameters["slug"]
+		}
+	}
+
+	categories, err := db.GetCategories(CategId, Slug)
+
+	if err != nil {
+		return 400, "It was an error to get category by [id:" + strconv.Itoa(CategId) + " and Path:" + Slug + "].\n" + err.Error()
+	}
+
+	jsonCategories, err := json.Marshal(categories)
+	if err != nil {
+		return 400, "It was an error to convert categories to JSON format.\n" + err.Error()
+	}
+
+	return 200, string(jsonCategories)
 }

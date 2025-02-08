@@ -117,11 +117,13 @@ func Categories(body string, path string, method string, user string, id int, re
 
 	switch method {
 	case "POST":
-		return routers.InsertCategory(body, user)
+		return routers.CreateCategory(body, user)
 	case "PUT":
 		return routers.UpdateCategory(body, user, id)
 	case "DELETE":
 		return routers.DeleteCategory(user, id)
+	case "GET":
+		return routers.GetCategories(request)
 	}
 
 	return 400, METHOD_INVALID

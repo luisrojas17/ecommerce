@@ -108,3 +108,69 @@ func DeleteCategory(id int) error {
 
 	return nil
 }
+
+func GetCategories(id int, slug string) ([]models.Category, error) {
+
+	nId := strconv.Itoa(id)
+
+	fmt.Println("Starting to get categories by [id:" + nId + " and path: " + slug + "] in database...")
+
+	// Define categies arrays.
+	var categories []models.Category
+
+	err := Connect()
+
+	if err != nil {
+		return categories, err
+	}
+
+	defer Close()
+
+	statement := "SELECT * FROM category "
+
+	if id > 0 {
+		statement += "WHERE Categ_Id = " + strconv.Itoa(id)
+	} else {
+		if len(slug) > 0 {
+			statement += "WHERE Categ_Path LIKE '%" + slug + "%'"
+		}
+	}
+
+	fmt.Println("Statement to execute: " + statement)
+
+	var rows *sql.Rows
+	rows, err = Connection.Query(statement)
+
+	if err != nil {
+		fmt.Println("It was an error to execute query: \n" + statement + ".\n" + err.Error())
+		return categories, err
+	}
+
+	for rows.Next() {
+		var category models.Category
+
+		// To handled null values
+		var id sql.NullInt32
+		var name sql.NullString
+		var path sql.NullString
+
+		err := rows.Scan(&id, &name, &path)
+		if err != nil {
+			fmt.Println("It was an error to iterate over the categories.\n" + err.Error())
+			return categories, err
+		}
+
+		// To handled null values
+		category.Id = int(id.Int32)
+		category.Name = name.String
+		category.Path = path.String
+
+		// We add new item to array/slice categories
+		categories = append(categories, category)
+	}
+
+	fmt.Printf("\nThere were found [%d] categories.\n", len(categories))
+
+	return categories, nil
+
+}
