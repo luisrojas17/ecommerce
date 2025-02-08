@@ -3,6 +3,7 @@ package handlers
 import (
 	"fmt"
 	"strconv"
+	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
 
@@ -31,8 +32,11 @@ func Handler(path string, method string, body string, headers map[string]string,
 	}
 
 	// To Do: process path in order to split from token "/" instead of use UrlPrefix variable.
+	operation := strings.Split(path, "/")
 
-	switch path {
+	// We always get the first item from the array because that item contains the path
+	// to identify the operation to do
+	switch operation[0] {
 
 	case "user":
 		return Users(body, path, method, user, id, request)

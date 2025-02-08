@@ -4,5 +4,5 @@
 # all local changes from local repository to remote repository.
 
 git add .
-git commit -m $1
+git commit -m "$1"
 git push

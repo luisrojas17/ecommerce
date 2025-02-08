@@ -68,5 +68,5 @@ func UpdateCategory(body string, User string, id int) (int, string) {
 		return 400, "It was an error to update category [id: " + strconv.Itoa(id) + ", name: " + category.Name + "]." + err2.Error()
 	}
 
-	return 200, "Category [categID: " + strconv.Itoa(id) + ", categName: " + category.Name + ", categPath: " + category.Path + "] was updated successfully."
+	return 200, "CategoryId: " + strconv.Itoa(id) + " was updated successfully."
 }

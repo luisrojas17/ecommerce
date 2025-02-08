@@ -5,10 +5,11 @@ echo "Starting to set environment variables..."
 export GOOS=linux
 export GOARCH=amd64
 
-del bootstrap
+rm bootstrap
 go build -o bootstrap main.go
-del main.zip
+rm main.zip
 
-tar.exe -a -cf main.zip bootstrap
+#tar -acvf main.zip bootstrap
+zip main.zip bootstrap
 
 echo "Compilation process was done."
