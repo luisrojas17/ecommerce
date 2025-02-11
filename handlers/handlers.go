@@ -110,7 +110,15 @@ func Users(body string, path string, method string, user string, id string, requ
 
 func Products(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 
-	return 400, METHOD_INVALID
+	switch method {
+	case "POST":
+		return routers.CreateProduct(body, user)
+	default:
+		fmt.Println("HTTP Method: [" + method + "] not found.")
+
+		return 400, METHOD_INVALID
+	}
+
 }
 
 func Categories(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
@@ -124,9 +132,12 @@ func Categories(body string, path string, method string, user string, id int, re
 		return routers.DeleteCategory(user, id)
 	case "GET":
 		return routers.GetCategories(request)
+	default:
+		fmt.Println("HTTP Method: [" + method + "] not found.")
+
+		return 400, METHOD_INVALID
 	}
 
-	return 400, METHOD_INVALID
 }
 
 func Stock(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {

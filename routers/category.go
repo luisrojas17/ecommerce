@@ -18,7 +18,7 @@ func CreateCategory(body string, User string) (int, string) {
 
 	err := json.Unmarshal([]byte(body), &category)
 	if err != nil {
-		return 400, "It was an error to get category. " + err.Error()
+		return 400, "It was an error to convert json category to model.  " + err.Error()
 	}
 
 	if len(category.Name) == 0 {
@@ -40,7 +40,7 @@ func CreateCategory(body string, User string) (int, string) {
 		return 400, "It was an error to insert category [" + category.Name + "].\n" + err2.Error()
 	}
 
-	return 200, "{ categoryId: " + strconv.Itoa(int(result)) + " }"
+	return 200, "{ id: " + strconv.Itoa(int(result)) + " }"
 }
 
 func UpdateCategory(body string, User string, id int) (int, string) {
@@ -71,7 +71,7 @@ func UpdateCategory(body string, User string, id int) (int, string) {
 		return 400, "It was an error to update category [id: " + strconv.Itoa(id) + ", name: " + category.Name + "].\n" + err2.Error()
 	}
 
-	return 200, "CategoryId: " + strconv.Itoa(id) + " was updated successfully."
+	return 200, "Category Id: " + strconv.Itoa(id) + " was updated successfully."
 }
 
 func DeleteCategory(User string, id int) (int, string) {
@@ -91,7 +91,7 @@ func DeleteCategory(User string, id int) (int, string) {
 		return 400, "It was an error to delete category id: " + strconv.Itoa(id) + ".\n" + err.Error()
 	}
 
-	return 200, "CategoryId: " + strconv.Itoa(id) + " was deleted successfully."
+	return 200, "Category Id: " + strconv.Itoa(id) + " was deleted successfully."
 }
 
 func GetCategories(request events.APIGatewayV2HTTPRequest) (int, string) {
@@ -99,9 +99,9 @@ func GetCategories(request events.APIGatewayV2HTTPRequest) (int, string) {
 	var err error
 	var categoryId int
 	var strCategoryId string
-	var Slug string
+	var slug string
 
-	strCategoryId = request.QueryStringParameters["categId"]
+	strCategoryId = request.QueryStringParameters["id"]
 
 	if len(strCategoryId) > 0 {
 		categoryId, err = strconv.Atoi(strCategoryId)
@@ -111,18 +111,18 @@ func GetCategories(request events.APIGatewayV2HTTPRequest) (int, string) {
 		}
 	} else {
 		if len(request.QueryStringParameters["slug"]) > 0 {
-			Slug = request.QueryStringParameters["slug"]
+			slug = request.QueryStringParameters["slug"]
 		}
 	}
 
-	categories, err := db.GetCategories(categoryId, Slug)
+	categories, err := db.GetCategories(categoryId, slug)
 
 	if err != nil {
-		return 400, "It was an error to get category by [id:" + strCategoryId + " and Path:" + Slug + "].\n" + err.Error()
+		return 400, "It was an error to get category by [id:" + strCategoryId + " and Path:" + slug + "].\n" + err.Error()
 	}
 
 	if len(categories) == 0 {
-		return 201, "There was not categories related to category id: " + strCategoryId + " or Path: " + Slug
+		return 201, "There was not categories related to category id: " + strCategoryId + " or Path: " + slug
 	}
 
 	jsonCategories, err := json.Marshal(categories)
