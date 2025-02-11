@@ -97,11 +97,14 @@ func DeleteCategory(User string, id int) (int, string) {
 func GetCategories(request events.APIGatewayV2HTTPRequest) (int, string) {
 
 	var err error
-	var CategId int
+	var categoryId int
+	var strCategoryId string
 	var Slug string
 
-	if len(request.QueryStringParameters["categId"]) > 0 {
-		CategId, err = strconv.Atoi(request.QueryStringParameters["categId"])
+	strCategoryId = request.QueryStringParameters["categId"]
+
+	if len(strCategoryId) > 0 {
+		categoryId, err = strconv.Atoi(strCategoryId)
 
 		if err != nil {
 			return 412, "The category id must be a numeric value greater than 0. " + err.Error()
@@ -112,10 +115,14 @@ func GetCategories(request events.APIGatewayV2HTTPRequest) (int, string) {
 		}
 	}
 
-	categories, err := db.GetCategories(CategId, Slug)
+	categories, err := db.GetCategories(categoryId, Slug)
 
 	if err != nil {
-		return 400, "It was an error to get category by [id:" + strconv.Itoa(CategId) + " and Path:" + Slug + "].\n" + err.Error()
+		return 400, "It was an error to get category by [id:" + strCategoryId + " and Path:" + Slug + "].\n" + err.Error()
+	}
+
+	if len(categories) == 0 {
+		return 201, "There was not categories related to category id: " + strCategoryId + " or Path: " + Slug
 	}
 
 	jsonCategories, err := json.Marshal(categories)
