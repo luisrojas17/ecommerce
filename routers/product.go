@@ -9,7 +9,7 @@ import (
 	"github.com/luisrojas17/ecommerce/models"
 )
 
-func CreateProduct(body string, User string) (int, string) {
+func CreateProduct(body string, user string) (int, string) {
 
 	var product models.Product
 
@@ -23,9 +23,9 @@ func CreateProduct(body string, User string) (int, string) {
 		return 400, "You must specify product's title."
 	}
 
-	isAdmin, msg := db.IsAdmin(User)
+	isAdmin, msg := db.IsAdmin(user)
 	if !isAdmin {
-		fmt.Println("Only admin users can create new catagories.")
+		fmt.Println("Only admin users can create new products.")
 		return 400, msg
 	}
 
@@ -39,7 +39,7 @@ func CreateProduct(body string, User string) (int, string) {
 	return 200, "{ id: " + strconv.Itoa(int(result)) + " }"
 }
 
-func UpdateProduct(body string, User string, id int) (int, string) {
+func UpdateProduct(body string, user string, id int) (int, string) {
 
 	var product models.Product
 
@@ -50,9 +50,9 @@ func UpdateProduct(body string, User string, id int) (int, string) {
 		return 400, "It was an error to get product. " + err.Error()
 	}
 
-	isAdmin, msg := db.IsAdmin(User)
+	isAdmin, msg := db.IsAdmin(user)
 	if !isAdmin {
-		fmt.Println("Only admin users can create new catagories.")
+		fmt.Println("Only admin users can update products.")
 		return 400, msg
 	}
 
@@ -64,4 +64,29 @@ func UpdateProduct(body string, User string, id int) (int, string) {
 	}
 
 	return 200, "Product Id: " + strconv.Itoa(id) + " was updated successfully."
+}
+
+func DeleteProduct(user string, id int) (int, string) {
+
+	if id == 0 {
+		return 412, "To delete any product you must specify the id since it is mandatory and it must be greater than 0."
+	}
+
+	isAdmin, msg := db.IsAdmin(user)
+	if !isAdmin {
+		fmt.Println("Only admin users can delete products.")
+		return 400, msg
+	}
+
+	isDeleted, err := db.DeleteProduct(id)
+	if err != nil {
+		return 400, "It was an error to delete product [id: " + strconv.Itoa(id) + "].\n" + err.Error()
+	}
+
+	if !isDeleted {
+		return 404, "Product Id: " + strconv.Itoa(id) + " does not exist. So, it could not be deleted."
+
+	}
+
+	return 200, "Product Id: " + strconv.Itoa(id) + " was deleted successfully."
 }

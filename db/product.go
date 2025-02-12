@@ -119,3 +119,45 @@ func UpdateProduct(product models.Product) error {
 
 	return nil
 }
+
+// This function delete a product in database. The product to be deleted has
+// to match to parameter id provided.
+func DeleteProduct(id int) (bool, error) {
+
+	nId := strconv.Itoa(id)
+
+	fmt.Println("Starting to delete product by id [" + nId + "] in database...")
+
+	err := Connect()
+
+	if err != nil {
+		return false, err
+	}
+
+	defer Close()
+
+	statement := "DELETE FROM products WHERE Prod_Id = " + nId
+
+	var result sql.Result
+	result, err = Connection.Exec(statement)
+	if err != nil {
+		fmt.Println(err.Error())
+		return false, err
+	}
+
+	// We validated if there is any row affected.
+	rowsAffected, err2 := result.RowsAffected()
+	if err2 != nil {
+		fmt.Println(err2.Error())
+		return false, err2
+	}
+
+	if rowsAffected > 0 {
+		fmt.Println("Product id [" + nId + "] was delete sucessfully. There was affected [" + strconv.Itoa(int(rowsAffected)) + "] rows.")
+		return true, nil
+	} else {
+		fmt.Println("It was not possible to delete product id [" + nId + "]. There was affected [0] rows.")
+		return false, nil
+	}
+
+}

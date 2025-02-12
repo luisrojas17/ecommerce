@@ -12,7 +12,7 @@ import (
 
 // All functions defined in this file can only invoke by administrator users.
 
-func CreateCategory(body string, User string) (int, string) {
+func CreateCategory(body string, user string) (int, string) {
 
 	var category models.Category
 
@@ -29,7 +29,7 @@ func CreateCategory(body string, User string) (int, string) {
 		return 400, "You must specify category's path."
 	}
 
-	isAdmin, msg := db.IsAdmin(User)
+	isAdmin, msg := db.IsAdmin(user)
 	if !isAdmin {
 		fmt.Println("Only admin users can create new catagories.")
 		return 400, msg
@@ -43,7 +43,7 @@ func CreateCategory(body string, User string) (int, string) {
 	return 200, "{ id: " + strconv.Itoa(int(result)) + " }"
 }
 
-func UpdateCategory(body string, User string, id int) (int, string) {
+func UpdateCategory(body string, user string, id int) (int, string) {
 
 	var category models.Category
 
@@ -58,7 +58,7 @@ func UpdateCategory(body string, User string, id int) (int, string) {
 		return 400, "You must specify category's name and category's path."
 	}
 
-	isAdmin, msg := db.IsAdmin(User)
+	isAdmin, msg := db.IsAdmin(user)
 	if !isAdmin {
 		fmt.Println("Only admin users can create new catagories.")
 		return 400, msg
@@ -74,21 +74,26 @@ func UpdateCategory(body string, User string, id int) (int, string) {
 	return 200, "Category Id: " + strconv.Itoa(id) + " was updated successfully."
 }
 
-func DeleteCategory(User string, id int) (int, string) {
+func DeleteCategory(user string, id int) (int, string) {
 
 	if id == 0 {
 		return 412, "To delete any category you must specify the id since it is mandatory and it must be greater than 0."
 	}
 
-	isAdmin, msg := db.IsAdmin(User)
+	isAdmin, msg := db.IsAdmin(user)
 	if !isAdmin {
 		fmt.Println("Only admin users can create new catagories.")
 		return 400, msg
 	}
 
-	err := db.DeleteCategory(id)
+	isDeleted, err := db.DeleteCategory(id)
 	if err != nil {
 		return 400, "It was an error to delete category id: " + strconv.Itoa(id) + ".\n" + err.Error()
+	}
+
+	if !isDeleted {
+		return 404, "Category Id: " + strconv.Itoa(id) + " does not exist. So, it could not be deleted."
+
 	}
 
 	return 200, "Category Id: " + strconv.Itoa(id) + " was deleted successfully."

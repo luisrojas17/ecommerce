@@ -84,8 +84,9 @@ func UpdateCategory(category models.Category) error {
 	return nil
 }
 
-// Delete a category in database.
-func DeleteCategory(id int) error {
+// This function delete a category in database. The product to be deleted has
+// to match to parameter id provided.
+func DeleteCategory(id int) (bool, error) {
 
 	nId := strconv.Itoa(id)
 
@@ -94,22 +95,34 @@ func DeleteCategory(id int) error {
 	err := Connect()
 
 	if err != nil {
-		return err
+		return false, err
 	}
 
 	defer Close()
 
 	statement := "DELETE FROM category where Categ_Id = " + nId
 
-	_, err = Connection.Exec(statement)
+	var result sql.Result
+	result, err = Connection.Exec(statement)
 	if err != nil {
 		fmt.Println(err.Error())
-		return err
+		return false, err
 	}
 
-	fmt.Println("Category id [" + nId + "] was delete sucessfully.")
+	rowsAffected, err2 := result.RowsAffected()
+	if err2 != nil {
+		fmt.Println(err2.Error())
+		return false, err2
+	}
 
-	return nil
+	if rowsAffected > 0 {
+		fmt.Println("Category id [" + nId + "] was delete sucessfully. There was affected [" + strconv.Itoa(int(rowsAffected)) + "] rows.")
+		return true, nil
+	} else {
+		fmt.Println("It was not possible to delete category id [" + nId + "]. There was affected [0] rows.")
+		return false, nil
+	}
+
 }
 
 // Get a category in database. Initially the function return a category

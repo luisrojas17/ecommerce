@@ -115,6 +115,8 @@ func Products(body string, path string, method string, user string, id int, requ
 		return routers.CreateProduct(body, user)
 	case "PUT":
 		return routers.UpdateProduct(body, user, id)
+	case "DELETE":
+		return routers.DeleteProduct(user, id)
 	default:
 		fmt.Println("HTTP Method: [" + method + "] not found.")
 
