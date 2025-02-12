@@ -113,6 +113,8 @@ func Products(body string, path string, method string, user string, id int, requ
 	switch method {
 	case "POST":
 		return routers.CreateProduct(body, user)
+	case "PUT":
+		return routers.UpdateProduct(body, user, id)
 	default:
 		fmt.Println("HTTP Method: [" + method + "] not found.")
 

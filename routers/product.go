@@ -38,3 +38,30 @@ func CreateProduct(body string, User string) (int, string) {
 	// We return the Id generated for product inserted.
 	return 200, "{ id: " + strconv.Itoa(int(result)) + " }"
 }
+
+func UpdateProduct(body string, User string, id int) (int, string) {
+
+	var product models.Product
+
+	// Convert json body to struct category
+	err := json.Unmarshal([]byte(body), &product)
+
+	if err != nil {
+		return 400, "It was an error to get product. " + err.Error()
+	}
+
+	isAdmin, msg := db.IsAdmin(User)
+	if !isAdmin {
+		fmt.Println("Only admin users can create new catagories.")
+		return 400, msg
+	}
+
+	product.Id = id
+
+	err2 := db.UpdateProduct(product)
+	if err2 != nil {
+		return 400, "It was an error to update product [id: " + strconv.Itoa(id) + "].\n" + err2.Error()
+	}
+
+	return 200, "Product Id: " + strconv.Itoa(id) + " was updated successfully."
+}

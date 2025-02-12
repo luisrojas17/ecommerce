@@ -83,3 +83,39 @@ func CreateProduct(product models.Product) (int64, error) {
 
 	return idCreated, err2
 }
+
+func UpdateProduct(product models.Product) error {
+
+	fmt.Println("Starting to update category in database...")
+
+	err := Connect()
+
+	if err != nil {
+		return err
+	}
+
+	defer Close()
+
+	statement := "UPDATE products SET "
+
+	statement = helper.BuildStatement(statement, "Prod_Title", "S", 0, 0, product.Title)
+	statement = helper.BuildStatement(statement, "Prod_Description", "S", 0, 0, product.Description)
+	statement = helper.BuildStatement(statement, "Prod_Price", "F", 0, product.Price, helper.EMPTY_STRING)
+	statement = helper.BuildStatement(statement, "Prod_CategoryId", "N", product.CategoryId, 0, helper.EMPTY_STRING)
+	statement = helper.BuildStatement(statement, "Prod_Stock", "N", product.Stock, 0, helper.EMPTY_STRING)
+	statement = helper.BuildStatement(statement, "Prod_Path", "S", 0, 0, product.Path)
+
+	statement += " WHERE Prod_Id = " + strconv.Itoa(product.Id)
+
+	fmt.Println("Statement to execute: " + statement)
+
+	_, err = Connection.Exec(statement)
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+
+	fmt.Println("Product id [" + strconv.Itoa(product.Id) + "] was updated sucessfully.")
+
+	return nil
+}

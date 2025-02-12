@@ -12,6 +12,7 @@ import (
 	"github.com/luisrojas17/ecommerce/models"
 )
 
+// Create a category in database.
 func CreateCategory(category models.Category) (int64, error) {
 
 	fmt.Println("Starting to insert category in database...")
@@ -43,6 +44,7 @@ func CreateCategory(category models.Category) (int64, error) {
 	return idCreated, err2
 }
 
+// Update a category in database.
 func UpdateCategory(category models.Category) error {
 
 	fmt.Println("Starting to update category in database...")
@@ -82,6 +84,7 @@ func UpdateCategory(category models.Category) error {
 	return nil
 }
 
+// Delete a category in database.
 func DeleteCategory(id int) error {
 
 	nId := strconv.Itoa(id)
@@ -109,6 +112,10 @@ func DeleteCategory(id int) error {
 	return nil
 }
 
+// Get a category in database. Initially the function return a category
+// according to category id or slug provided like parameter. But If the id
+// and slug parameters are not provided the function return all categories
+// in the database.
 func GetCategories(id int, slug string) ([]models.Category, error) {
 
 	nId := strconv.Itoa(id)

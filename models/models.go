@@ -1,5 +1,7 @@
 package models
 
+// This structure wraps all data related to database connection.
+// See AWS Secrets Manager.
 type Secret struct {
 	Username            string `json:"username"`
 	Password            string `json:"password"`
@@ -7,21 +9,28 @@ type Secret struct {
 	Host                string `json:"host"`
 	Port                int    `json:"port"`
 	DbClusterIdentifier string `json:"dbClusterIdentifier"`
+	DbName              string `json:"dbName"`
 }
 
+// This structure wraps all user data registered in Cognito and database.
+// See users table in database.
 type User struct {
 	Email string `json:"UserEmail"`
 	Uuid  string `json:"UserUUID"`
 }
 
+// This structure wrpas all category's data.
+// See category table in database.
 type Category struct {
 	Id   int    `json:"id"`
 	Name string `json:"name"`
 	Path string `json:"path"`
 }
 
+// This structure wrpas all products' data.
+// See products table in database.
 type Product struct {
-	Id           int64   `json:"id"`
+	Id           int     `json:"id"`
 	Title        string  `json:"title"`
 	Description  string  `json:"description"`
 	CreatedAt    string  `json:"createdAt"`
