@@ -1,5 +1,9 @@
 package models
 
+const ASC = "ASC"
+
+const DESC = "DESC"
+
 // This structure wraps all data related to database connection.
 // See AWS Secrets Manager.
 type Secret struct {
@@ -41,4 +45,9 @@ type Product struct {
 	CategoryId   int     `json:"categoryId"`
 	CategoryPath string  `json:"categoryPath,omitempty"`
 	Search       string  `json:"search,omitempty"`
+}
+
+type Pageable struct {
+	TotalElements int       `json:"totalElements"`
+	Content       []Product `json:"content"`
 }

@@ -106,6 +106,7 @@ func GetCategories(request events.APIGatewayV2HTTPRequest) (int, string) {
 	var strCategoryId string
 	var slug string
 
+	// We get an id from query parameters map
 	strCategoryId = request.QueryStringParameters["id"]
 
 	if len(strCategoryId) > 0 {

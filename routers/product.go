@@ -4,8 +4,12 @@ import (
 	"encoding/json"
 	"fmt"
 	"strconv"
+	"strings"
+
+	"github.com/aws/aws-lambda-go/events"
 
 	"github.com/luisrojas17/ecommerce/db"
+	"github.com/luisrojas17/ecommerce/helper"
 	"github.com/luisrojas17/ecommerce/models"
 )
 
@@ -89,4 +93,51 @@ func DeleteProduct(user string, id int) (int, string) {
 	}
 
 	return 200, "Product Id: " + strconv.Itoa(id) + " was deleted successfully."
+}
+
+// This function get all products in a paged way.
+func GetProducts(request events.APIGatewayV2HTTPRequest) (int, string) {
+
+	var product models.Product
+	var page, pageSize int
+	var orderType, orderField string
+
+	queryPameters := request.QueryStringParameters
+
+	fmt.Println("QueryParameters to process get products request: ", queryPameters)
+
+	page, _ = strconv.Atoi(queryPameters["page"])
+	pageSize, _ = strconv.Atoi(queryPameters["pageSize"])
+	orderType = queryPameters["orderType"]   // DESC or ASC
+	orderField = queryPameters["orderField"] // Id = 1, Title = 2, Description = 3, CreatedAt = 4,
+	// Price = 5, Stock = 6, CategoryId = 7
+
+	if !strings.Contains("123456", orderField) {
+		orderField = helper.EMPTY_STRING
+	}
+
+	//var choice string
+	//if len(queryPameters["id"]) > 0 {choice = "ID"}
+	product.Id, _ = strconv.Atoi(queryPameters["id"])
+	product.Search = queryPameters["search"]
+	product.Path = queryPameters["slug"]
+	product.CategoryId, _ = strconv.Atoi(queryPameters["categoryId"])
+	product.CategoryPath = queryPameters["categorySlug"]
+
+	var pageable models.Pageable
+	var err error
+	pageable, err = db.GetProducts(product, page, pageSize, orderType, orderField)
+
+	if err != nil {
+		return 400, "It was an error to get products.\n" + err.Error()
+	}
+
+	var jsonPageable []byte
+	jsonPageable, err = json.Marshal(pageable)
+	if err != nil {
+		return 400, "It was an error to convert products to JSON format.\n" + err.Error()
+	}
+
+	return 200, string(jsonPageable)
+
 }

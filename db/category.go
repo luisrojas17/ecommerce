@@ -174,6 +174,7 @@ func GetCategories(id int, slug string) ([]models.Category, error) {
 		var name sql.NullString
 		var path sql.NullString
 
+		// To map each column to variable defined before
 		err := rows.Scan(&id, &name, &path)
 		if err != nil {
 			fmt.Println("It was an error to iterate over the categories.\n" + err.Error())

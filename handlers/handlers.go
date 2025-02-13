@@ -55,11 +55,12 @@ func Handler(path string, method string, body string, headers map[string]string,
 
 	case "order":
 		return Orders(body, path, method, user, idn, request)
+
+	default:
+		fmt.Println("The request couldn't be processing.")
+
+		return 400, METHOD_INVALID
 	}
-
-	fmt.Println("The request couldn't be processing.")
-
-	return 400, METHOD_INVALID
 
 }
 
@@ -117,6 +118,8 @@ func Products(body string, path string, method string, user string, id int, requ
 		return routers.UpdateProduct(body, user, id)
 	case "DELETE":
 		return routers.DeleteProduct(user, id)
+	case "GET":
+		return routers.GetProducts(request)
 	default:
 		fmt.Println("HTTP Method: [" + method + "] not found.")
 
