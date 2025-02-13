@@ -188,7 +188,7 @@ func GetProducts(product models.Product, page int, pageSize int, orderType strin
 
 	// To prepare conditions for where clause.
 	if product.Id > 0 {
-		where = " WHERE Prod_Id " + strconv.Itoa(product.Id)
+		where = " WHERE Prod_Id = " + strconv.Itoa(product.Id)
 	} else if product.Search != helper.EMPTY_STRING {
 		where = " WHERE UCASE(CONCAT(Prod_Title, Prod_Description)) LIKE '%" + strings.ToUpper(product.Search) + "%' "
 	} else if product.CategoryId > 0 {
@@ -260,19 +260,19 @@ func GetProducts(product models.Product, page int, pageSize int, orderType strin
 		// Id = 1, Title = 2, Description = 3, CreatedAt = 4, Price = 5, Stock = 6, CategoryId = 7
 		switch orderField {
 		case "1":
-			orderBy = "ORDER BY Prod_Id "
+			orderBy = " ORDER BY Prod_Id "
 		case "2":
-			orderBy = "ORDER BY Prod_Title "
+			orderBy = " ORDER BY Prod_Title "
 		case "3":
-			orderBy = "ORDER BY Prod_Description "
+			orderBy = " ORDER BY Prod_Description "
 		case "4":
-			orderBy = "ORDER BY Prod_CreatedAt "
+			orderBy = " ORDER BY Prod_CreatedAt "
 		case "5":
-			orderBy = "ORDER BY Prod_Price "
+			orderBy = " ORDER BY Prod_Price "
 		case "6":
-			orderBy = "ORDER BY Prod_Stock "
+			orderBy = " ORDER BY Prod_Stock "
 		case "7":
-			orderBy = "ORDER BY Prod_CategoryId "
+			orderBy = " ORDER BY Prod_CategoryId "
 		default:
 			orderBy = helper.EMPTY_STRING
 		}
@@ -290,6 +290,11 @@ func GetProducts(product models.Product, page int, pageSize int, orderType strin
 
 	// To execute statement to get all products in database.
 	rows, err = Connection.Query(statement)
+
+	if err != nil {
+		fmt.Println("It was an error to execute query: \n" + statement + ".\n" + err.Error())
+		return pageable, err
+	}
 
 	// To iterate over result.
 	for rows.Next() {
