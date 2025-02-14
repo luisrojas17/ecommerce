@@ -19,7 +19,7 @@ func CreateProduct(body string, user string) (int, string) {
 
 	err := json.Unmarshal([]byte(body), &product)
 	if err != nil {
-		return 400, "It was an error to convert json product to model. " + err.Error()
+		return 400, "It was an error to convert JSON product to model. " + err.Error()
 	}
 
 	// We only validate this field since this is mandatory field. All other fields are optionals.
@@ -47,11 +47,11 @@ func UpdateProduct(body string, user string, id int) (int, string) {
 
 	var product models.Product
 
-	// Convert json body to struct category
+	// Convert json body to struct product
 	err := json.Unmarshal([]byte(body), &product)
 
 	if err != nil {
-		return 400, "It was an error to get product. " + err.Error()
+		return 400, "It was an error to convert product' model to JSON format. " + err.Error()
 	}
 
 	isAdmin, msg := db.IsAdmin(user)
@@ -140,4 +140,31 @@ func GetProducts(request events.APIGatewayV2HTTPRequest) (int, string) {
 
 	return 200, string(jsonPageable)
 
+}
+
+func UpdateStock(body string, user string, id int) (int, string) {
+
+	var product models.Product
+
+	// Convert json body to struct product
+	err := json.Unmarshal([]byte(body), &product)
+
+	if err != nil {
+		return 400, "It was an error to convert product stock's model to JSON format. " + err.Error()
+	}
+
+	isAdmin, msg := db.IsAdmin(user)
+	if !isAdmin {
+		fmt.Println("Only admin users can update product' stock.")
+		return 400, msg
+	}
+
+	product.Id = id
+
+	err2 := db.UpdateStock(product)
+	if err2 != nil {
+		return 400, "It was an error to update product's stoke [id: " + strconv.Itoa(id) + "].\n" + err2.Error()
+	}
+
+	return 200, "Product id stock: " + strconv.Itoa(id) + " was updated successfully."
 }

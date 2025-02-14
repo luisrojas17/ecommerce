@@ -2,6 +2,7 @@ package db
 
 import (
 	"database/sql"
+	"errors"
 	"fmt"
 	"strconv"
 	"strings"
@@ -87,7 +88,7 @@ func CreateProduct(product models.Product) (int64, error) {
 
 func UpdateProduct(product models.Product) error {
 
-	fmt.Println("Starting to update category in database...")
+	fmt.Println("Starting to update product in database...")
 
 	err := Connect()
 
@@ -338,4 +339,37 @@ func GetProducts(product models.Product, page int, pageSize int, orderType strin
 	pageable.Content = products
 
 	return pageable, nil
+}
+
+func UpdateStock(product models.Product) error {
+
+	strId := strconv.Itoa(product.Id)
+
+	fmt.Println("Starting to update stock for product id [" + strId + "] in database...")
+
+	if product.Id == 0 {
+		return errors.New("The stock value must be greater or less than 0")
+	}
+
+	err := Connect()
+
+	if err != nil {
+		return err
+	}
+
+	defer Close()
+
+	statement := "Update products SET Prod_Stock = Prod_Stock + " + strconv.Itoa(product.Stock) + " WHERE Prod_Id = " + strId
+
+	fmt.Println("Statement to execute: " + statement)
+
+	_, err = Connection.Exec(statement)
+	if err != nil {
+		fmt.Println(err.Error())
+		return err
+	}
+
+	fmt.Println("Stock for product id [" + strId + "] was updated sucessfully.")
+
+	return nil
 }

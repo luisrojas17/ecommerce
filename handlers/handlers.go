@@ -11,6 +11,8 @@ import (
 	"github.com/luisrojas17/ecommerce/routers"
 )
 
+// String constant to define a custom message to return
+// when any API request can not be handled.
 const METHOD_INVALID = "Method Invalid."
 
 // Returns the HTTP status code and message to describe the error.
@@ -109,16 +111,30 @@ func Users(body string, path string, method string, user string, id string, requ
 	return 400, METHOD_INVALID
 }
 
+// This API handled all CRUD operations related to products table.
 func Products(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 
 	switch method {
 	case "POST":
+		//HOST + /v1/ecommerce/product
+		//	{
+		//		"title": "Microwave",
+		//		"description": "This is an appliance.",
+		//		"price": 5000
+		//	}
 		return routers.CreateProduct(body, user)
 	case "PUT":
+		// HOST + /v1/ecommerce/product/{id}
+		//	{
+		//		"categoryId": 8,
+		//		"stock": 3
+		//	}
 		return routers.UpdateProduct(body, user, id)
 	case "DELETE":
+		// HOST + /v1/ecommerce/product/{id}
 		return routers.DeleteProduct(user, id)
 	case "GET":
+		// HOST + /v1/ecommerce/product?pageSize=10&page=2&orderField=1&orderType=ASC&id=1&search=best&slug=&categoryId=7&categorySlug=Consoles
 		return routers.GetProducts(request)
 	default:
 		fmt.Println("HTTP Method: [" + method + "] not found.")
@@ -128,16 +144,28 @@ func Products(body string, path string, method string, user string, id int, requ
 
 }
 
+// This API handled all CRUD operations related to category table.
 func Categories(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 
 	switch method {
 	case "POST":
+		// HOST + /v1/ecommerce/category
+		//	{
+		//		"name": "Video Games",
+		//		"path": "Consoles"
+		//	}
 		return routers.CreateCategory(body, user)
 	case "PUT":
+		// HOST + /v1/ecommerce/category/{id}
+		//	{
+		//		"name": "Instrumentos Musicales"
+		//	}
 		return routers.UpdateCategory(body, user, id)
 	case "DELETE":
+		// HOST + /v1/ecommerce/category/{id}
 		return routers.DeleteCategory(user, id)
 	case "GET":
+		// HOST + /v1/ecommerce/category?slug=Television&categId=7
 		return routers.GetCategories(request)
 	default:
 		fmt.Println("HTTP Method: [" + method + "] not found.")
@@ -147,9 +175,12 @@ func Categories(body string, path string, method string, user string, id int, re
 
 }
 
+// This API receive product id to update stock field in products table.
+// Host + /v1/ecommerce/stock/{id}
 func Stock(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 
-	return 400, METHOD_INVALID
+	return routers.UpdateStock(body, user, id)
+
 }
 
 func Address(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {

@@ -11,7 +11,7 @@ import (
 	"github.com/luisrojas17/ecommerce/models"
 )
 
-// It is defined this variable like pointer to set available this variable
+// This is a global variable like a pointer which is available
 // for all application in a better way.
 var Connection *sql.DB
 
