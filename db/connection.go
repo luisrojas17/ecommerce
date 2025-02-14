@@ -81,7 +81,10 @@ func buildConnectionString(secret models.Secret) string {
 	dbName = secret.DbName
 
 	//connectionString := fmt.Sprintf("%s:%s@tcp(%s)/%s?allowCleartextPassword=true", user, pass, dbEndpoint, dbName)
-	connectionString := fmt.Sprintf("%s:%s@tcp(%s)/%s", user, pass, dbEndpoint, dbName)
+
+	// To specify to the driver to scan DATE and DATETIME automatically to time.Time
+	// See: https://github.com/go-sql-driver/mysql#timetime-support
+	connectionString := fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", user, pass, dbEndpoint, dbName)
 
 	fmt.Println("\nConnection string is: ", connectionString)
 
