@@ -184,7 +184,7 @@ func GetProducts(product models.Product, page int, pageSize int, orderType strin
 
 	countStatement = "SELECT count(*) as records FROM products "
 
-	statement = "SELECT * FROM products "
+	statement = "SELECT Prod_Id, Prod_Title, Prod_Description, Prod_CreatedAt, Prod_Updated, Prod_Price, Prod_Path, Prod_CategoryId, Prod_Stock FROM products "
 
 	// To prepare conditions for where clause.
 	if product.Id > 0 {
@@ -192,7 +192,7 @@ func GetProducts(product models.Product, page int, pageSize int, orderType strin
 	} else if product.Search != helper.EMPTY_STRING {
 		where = " WHERE UCASE(CONCAT(Prod_Title, Prod_Description)) LIKE '%" + strings.ToUpper(product.Search) + "%' "
 	} else if product.CategoryId > 0 {
-		where = " WHERE Prod_CategoryId " + strconv.Itoa(product.CategoryId)
+		where = " WHERE Prod_CategoryId = " + strconv.Itoa(product.CategoryId)
 	} else if product.Path != helper.EMPTY_STRING {
 		where = " WHERE UCASE(Prod_Path) LIKE '%" + strings.ToUpper(product.Path) + "%' "
 	} else if product.CategoryPath != helper.EMPTY_STRING {
