@@ -12,6 +12,7 @@ import (
 	"github.com/luisrojas17/ecommerce/models"
 )
 
+// Create a category in database.
 func CreateCategory(category models.Category) (int64, error) {
 
 	fmt.Println("Starting to insert category in database...")
@@ -43,6 +44,7 @@ func CreateCategory(category models.Category) (int64, error) {
 	return idCreated, err2
 }
 
+// Update a category in database.
 func UpdateCategory(category models.Category) error {
 
 	fmt.Println("Starting to update category in database...")
@@ -82,7 +84,9 @@ func UpdateCategory(category models.Category) error {
 	return nil
 }
 
-func DeleteCategory(id int) error {
+// This function delete a category in database. The product to be deleted has
+// to match to parameter id provided.
+func DeleteCategory(id int) (bool, error) {
 
 	nId := strconv.Itoa(id)
 
@@ -91,24 +95,40 @@ func DeleteCategory(id int) error {
 	err := Connect()
 
 	if err != nil {
-		return err
+		return false, err
 	}
 
 	defer Close()
 
 	statement := "DELETE FROM category where Categ_Id = " + nId
 
-	_, err = Connection.Exec(statement)
+	var result sql.Result
+	result, err = Connection.Exec(statement)
 	if err != nil {
 		fmt.Println(err.Error())
-		return err
+		return false, err
 	}
 
-	fmt.Println("Category id [" + nId + "] was delete sucessfully.")
+	rowsAffected, err2 := result.RowsAffected()
+	if err2 != nil {
+		fmt.Println(err2.Error())
+		return false, err2
+	}
 
-	return nil
+	if rowsAffected > 0 {
+		fmt.Println("Category id [" + nId + "] was delete sucessfully. There was affected [" + strconv.Itoa(int(rowsAffected)) + "] rows.")
+		return true, nil
+	} else {
+		fmt.Println("It was not possible to delete category id [" + nId + "]. There was affected [0] rows.")
+		return false, nil
+	}
+
 }
 
+// Get a category in database. Initially the function return a category
+// according to category id or slug provided like parameter. But If the id
+// and slug parameters are not provided the function return all categories
+// in the database.
 func GetCategories(id int, slug string) ([]models.Category, error) {
 
 	nId := strconv.Itoa(id)
@@ -154,6 +174,7 @@ func GetCategories(id int, slug string) ([]models.Category, error) {
 		var name sql.NullString
 		var path sql.NullString
 
+		// To map each column to variable defined before
 		err := rows.Scan(&id, &name, &path)
 		if err != nil {
 			fmt.Println("It was an error to iterate over the categories.\n" + err.Error())

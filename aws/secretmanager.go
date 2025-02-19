@@ -10,12 +10,25 @@ import (
 	"github.com/luisrojas17/ecommerce/models"
 )
 
-/*
-This function gets the secret configurated in AWS Secret Manager. All data related to secret
-are wrapping into SecretModel.
-
-Param "secretName" is a name of the secret to get.
-*/
+// This function gets the secret configurated in AWS Secret Manager.
+// The secret contains all data related to database connection which
+// will be wrapping into Secret Model.
+// This is an example what this function will get when is invoked the
+// AWS Secrets Manager API:
+//
+//	{
+//		"username":"somevalue",
+//		"password":"somevalue",
+//		"engine":"mysql",
+//		"host":"somevalue",
+//		"port":somevalue,
+//		"dbname":"somevalue",
+//		"dbInstanceIdentifier":"somevalue"
+//	}
+//
+// Param "secretName" is a name of the secretconfigure in AWS Secrets Manager.
+// This value is defined like environment variable.
+// See: Lambda configuration -> Environment variables
 func GetSecret(secretName string) (models.Secret, error) {
 	var secretModel models.Secret
 

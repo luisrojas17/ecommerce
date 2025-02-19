@@ -43,7 +43,7 @@ func IsAdmin(userId string) (bool, string) {
 
 	defer Close()
 
-	statement := "SELECT 1 FROM users WHERE User_UUID='" + userId + "' AND User_Status = 0"
+	statement := "SELECT 1 FROM users WHERE User_UUID = '" + userId + "' AND User_Status = 0"
 
 	fmt.Println("Executing statement: ", statement)
 

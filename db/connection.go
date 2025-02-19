@@ -11,11 +11,14 @@ import (
 	"github.com/luisrojas17/ecommerce/models"
 )
 
-// It is defined this variable like pointer to set available this variable for all application
-// in a better way.
+// This is a global variable like a pointer which is available
+// for all application in a better way.
 var Connection *sql.DB
 
+// This function gets a database connection.
 func Connect() error {
+
+	// To get the data connection to connect to database
 	secretModel, err := aws.GetSecret(os.Getenv("SecretName"))
 
 	if err != nil {
@@ -42,6 +45,7 @@ func Connect() error {
 	return nil
 }
 
+// This function wraps functionality to close database connection.
 func Close() {
 	fmt.Println("Closing connection...")
 
@@ -50,6 +54,7 @@ func Close() {
 	fmt.Println("Connection was closed.")
 }
 
+// This function wraps functionality to execute .
 func Execute(statement string) error {
 
 	fmt.Println(statement)
@@ -64,30 +69,22 @@ func Execute(statement string) error {
 
 }
 
-/*func Execute(statement string) (*sql.Rows, error) {
-
-	fmt.Println(statement)
-
-	rows, err := Connection.Query(statement)
-
-	if err != nil {
-		return nil, err
-	}
-
-	return rows, nil
-
-}*/
-
+// This function build the string connection.
+// The string connection is built based on data connection which
+// are wrapping into Secret structure.
 func buildConnectionString(secret models.Secret) string {
 	var user, pass, dbEndpoint, dbName string
 
 	user = secret.Username
 	pass = secret.Password
 	dbEndpoint = secret.Host
-	dbName = "ecommerce_db"
+	dbName = secret.DbName
 
 	//connectionString := fmt.Sprintf("%s:%s@tcp(%s)/%s?allowCleartextPassword=true", user, pass, dbEndpoint, dbName)
-	connectionString := fmt.Sprintf("%s:%s@tcp(%s)/%s", user, pass, dbEndpoint, dbName)
+
+	// To specify to the driver to scan DATE and DATETIME automatically to time.Time
+	// See: https://github.com/go-sql-driver/mysql#timetime-support
+	connectionString := fmt.Sprintf("%s:%s@tcp(%s)/%s?parseTime=true", user, pass, dbEndpoint, dbName)
 
 	fmt.Println("\nConnection string is: ", connectionString)
 
