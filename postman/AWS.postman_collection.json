@@ -1,0 +1,617 @@
+{
+	"info": {
+		"_postman_id": "0f183633-6a54-4bb6-8162-3598fb1ec419",
+		"name": "AWS",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "12201400"
+	},
+	"item": [
+		{
+			"name": "Cognito",
+			"item": [
+				{
+					"name": "DeleteUserFromUserPool",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n  \"UserPoolId\": \"us-east-1_IKvjGOmyz\", \r\n  \"Username\": \"jose.jvm.com@gmail.com\" \r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "https://cognito-idp.us-east-1.amazonaws.com",
+							"protocol": "https",
+							"host": [
+								"cognito-idp",
+								"us-east-1",
+								"amazonaws",
+								"com"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetTokenFromCode",
+					"request": {
+						"auth": {
+							"type": "basic",
+							"basic": [
+								{
+									"key": "username",
+									"value": "3qfc0v5plov114n7082vbu68a4",
+									"type": "string"
+								},
+								{
+									"key": "password",
+									"value": "1f4o9r9bo8qml6d7nqlr3nmpo71i9k3q3coifp72v5hp5k5n2kqc",
+									"type": "string"
+								}
+							]
+						},
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "grant_type",
+									"value": "authorization_code",
+									"type": "text"
+								},
+								{
+									"key": "client_id",
+									"value": "3qfc0v5plov114n7082vbu68a4",
+									"type": "text"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://localhost:3000",
+									"type": "text"
+								},
+								{
+									"key": "code",
+									"value": "1993b36e-6db6-4f81-8760-9805e8988ab3",
+									"type": "text"
+								},
+								{
+									"key": "client_secret",
+									"value": "1f4o9r9bo8qml6d7nqlr3nmpo71i9k3q3coifp72v5hp5k5n2kqc",
+									"type": "text"
+								},
+								{
+									"key": "scope",
+									"value": "client_credentials",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "https://us-east-1ikvjgomyz.auth.us-east-1.amazoncognito.com/oauth2/token",
+							"protocol": "https",
+							"host": [
+								"us-east-1ikvjgomyz",
+								"auth",
+								"us-east-1",
+								"amazoncognito",
+								"com"
+							],
+							"path": [
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GetTokenFromOAuth2",
+					"request": {
+						"auth": {
+							"type": "oauth2",
+							"oauth2": [
+								{
+									"key": "clientSecret",
+									"value": "1f4o9r9bo8qml6d7nqlr3nmpo71i9k3q3coifp72v5hp5k5n2kqc",
+									"type": "string"
+								},
+								{
+									"key": "clientId",
+									"value": "3qfc0v5plov114n7082vbu68a4",
+									"type": "string"
+								},
+								{
+									"key": "accessTokenUrl",
+									"value": "https://us-east-1ikvjgomyz.auth.us-east-1.amazoncognito.com/",
+									"type": "string"
+								},
+								{
+									"key": "authUrl",
+									"value": "https://us-east-1ikvjgomyz.auth.us-east-1.amazoncognito.com/",
+									"type": "string"
+								},
+								{
+									"key": "scope",
+									"value": "openid",
+									"type": "string"
+								},
+								{
+									"key": "redirect_uri",
+									"value": "http://localhost:3000",
+									"type": "string"
+								},
+								{
+									"key": "addTokenTo",
+									"value": "header",
+									"type": "string"
+								}
+							]
+						},
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "https://us-east-1ikvjgomyz.auth.us-east-1.amazoncognito.com/oauth2/token",
+							"protocol": "https",
+							"host": [
+								"us-east-1ikvjgomyz",
+								"auth",
+								"us-east-1",
+								"amazoncognito",
+								"com"
+							],
+							"path": [
+								"oauth2",
+								"token"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "APIGateway",
+			"item": [
+				{
+					"name": "ecommerce",
+					"item": [
+						{
+							"name": "category",
+							"item": [
+								{
+									"name": "Create",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiI2MWM3MmVlOC01ZDU2LTRlZDEtOTUxYy00OWJiODgwYWZhZmMiLCJldmVudF9pZCI6Ijg4ZjhjZDdhLTQ5MTItNGUxOC04YjU2LWE0MTY3Yjc2ZDIxMyIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4gb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzM5NTA1MzA4LCJleHAiOjE3Mzk1OTE3MDgsImlhdCI6MTczOTUwNTMwOCwianRpIjoiMTk4M2FiMWYtNDk1ZS00N2EwLThmMjAtNzczN2RkOGEwMzNhIiwidXNlcm5hbWUiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MifQ.lLwrfsoe8PA0Krtk5WQGRhgXIrh4dUBKgri4W7exHkzA2dAGAQwnfaQMsQxXayDC32wole1gbT2Ugg8RGk17KxHRfrZf5Vsw10W7-MXnsMjMw0eWW65cUkc1qhp90ht44vt2oSgoZ_fYi-X0y38hq245fGsmCCW0AHq1ik_S5BcvTaj45Y5dcN0ZSgnn_cYsy-VhtMP6TdP3QfiTQGHN9NdRQQnA-do_vObDbWxr_NfGyYGFceN7QSmRSQhCL25o3UVYZTvrv5Ri9-vwmOAoVyn7zcVDS_K1aMDOQPe5RlEyuzpVSKRbYO2tkMkGRe9n5U3agtnZueTkH-1F8DtIqg",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"Video Games\",\r\n    \"path\": \"Consoles\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ecommerce_url}}/category",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"category"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiI2NGJmYzQyMy1hYjU4LTRiMmEtOGI3Yy05ZjNlNWRlNzYyMTEiLCJldmVudF9pZCI6ImJjNzE5NGIwLTAwODQtNDUwMi1hN2JlLTY2NTQ0OGFlMzdmNiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4gb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzM4OTc4NzQ4LCJleHAiOjE3MzkwNjUxNDgsImlhdCI6MTczODk3ODc0OCwianRpIjoiODk3ZjE1ZTUtYjlhNS00NDIzLWE1NWMtMDEwNzEwZjIwMjM2IiwidXNlcm5hbWUiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MifQ.cuApGrClmEMCr7-H-ODff2tZbxb4DPlwAwAwP4Irn1jAM406pZ_gRMo7JUbLimcfPfaRy8szNsmNl4OvbAclWgmbIA8FAV2Sg-JXf8-kHg8QhaGT4o2uqZbSXWTLEVLqFBkDIK_sgSucdVypYAzWCKGN5BT_u0OszbHI7VJiiP-Vm4Ty0l2k8ZpmpDx8VLJc2Kad7Rokr2SepfTi04nWq9VmJ1P4xoBiT-SYQiFwRNIbB8pgIT1TGgrybDjwHKzAm-DsXElxrs7mQjBTX3aQHK8s8tW1p2Kqx66SBoZJ9OSW_s79AvmzI1rN_z4XTI8-5TyKE3qRsaeg1fU9ge-rHA",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"name\": \"Instrumentos Musicales\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ecommerce_url}}/category/1",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"category",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiI1MWI3YjllMC1lNmFiLTQ3N2UtODViYi0xYTg2NmU0NTgxOTUiLCJldmVudF9pZCI6IjY5NTIyODE1LTI0MDctNGU5NS04ZDE4LWIzNWRhOGI1ZmZkNiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4gb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzM5MzkxMzYxLCJleHAiOjE3Mzk0Nzc3NjEsImlhdCI6MTczOTM5MTM2MSwianRpIjoiYTA3NDZhNzMtZGUyYy00ZmU2LTkyYzYtNzM0ZTg0Y2VjNDlkIiwidXNlcm5hbWUiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MifQ.sIQL9CfQEidbvaaMSmzk-8flyt2yAPEPMaISnQzErp8Iqg1tEwML1ZUsb4tq_PHRjjl5grwboU-_KeIUCXQflDeKSvryhRDoQEPjA0PcBdPas1X2QG87TR89_QyxDwOMM_v8U_RX9OjwdO7VfcaHg-STlD-3O0qE7uBvDYbUq5n-jx8YvfeDe1G2_dzatPWBJzfBLMBAhSqInvqse-4P_vKQNqG2Nqq8oh1H3bGnSK7-8_nrIVzwk6aUf1k_Py_-sSzBJiTOYbpuCNGR0wBp1aUMEvabX708cwGvhJ5fOSKcePvZXTz2TbaVzOMrAfkJlhht4HEmvTP_z15CIPROzA",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"categName\": \"Instrumentos Musicales\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ecommerce_url}}/category/0",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"category",
+												"0"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiI3NDNkY2QxNy1hODE4LTQ5ZjctOWJjYy01ZWU2NTM0OWRkYTciLCJ0b2tlbl91c2UiOiJhY2Nlc3MiLCJzY29wZSI6ImF3cy5jb2duaXRvLnNpZ25pbi51c2VyLmFkbWluIG9wZW5pZCBlbWFpbCIsImF1dGhfdGltZSI6MTczOTIzNjUwMCwiZXhwIjoxNzM5MzIyOTAwLCJpYXQiOjE3MzkyMzY1MDAsImp0aSI6IjRlOTFjMGU5LTEzMGUtNDM4Yy1iMDA3LTdjMTA3MjhiNmI5YSIsInVzZXJuYW1lIjoiMDQzODg0ZjgtYjBhMS03MDRiLTk3M2MtYmI4MzE1YzdkNDdjIn0.BqTq9gTEZ_RFziN5WAmFSRp-KKay2y1l3uW_egw3BUQ1F2Q8b-a3oN7xhcledbxZY1BfzXq1-3Kc7lg-Lc9gGgB9FdtHiFDHsUH-ipbTVwC-ZILnrEY5U2tC47tag7lAhC5Vt_ZZ8hBfYNj47xAK5_pPK1dkoxmXKw1dcEDp0dgRUhIQ9kk1IwZVGyMKQD7lKoklmwAE7sQbZlix6tU_3pOGb2Xy3h0tf1UAtoWJBbJU9kx__QWILSTY1acVzr32KM34sdJvMqKPu-mwT7SdRQi1yO1W3IJbeOZ0vm4JsM2lBM92RDj7JK4rciLaj5c9W4i746bGiCnBNzIPw8z1Hg",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{ecommerce_url}}/category?categId=7",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"category"
+											],
+											"query": [
+												{
+													"key": "slug",
+													"value": "Television",
+													"disabled": true
+												},
+												{
+													"key": "categId",
+													"value": "7"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "product",
+							"item": [
+								{
+									"name": "Create",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiI1MWI3YjllMC1lNmFiLTQ3N2UtODViYi0xYTg2NmU0NTgxOTUiLCJldmVudF9pZCI6IjY5NTIyODE1LTI0MDctNGU5NS04ZDE4LWIzNWRhOGI1ZmZkNiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4gb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzM5MzkxMzYxLCJleHAiOjE3Mzk0Nzc3NjEsImlhdCI6MTczOTM5MTM2MSwianRpIjoiYTA3NDZhNzMtZGUyYy00ZmU2LTkyYzYtNzM0ZTg0Y2VjNDlkIiwidXNlcm5hbWUiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MifQ.sIQL9CfQEidbvaaMSmzk-8flyt2yAPEPMaISnQzErp8Iqg1tEwML1ZUsb4tq_PHRjjl5grwboU-_KeIUCXQflDeKSvryhRDoQEPjA0PcBdPas1X2QG87TR89_QyxDwOMM_v8U_RX9OjwdO7VfcaHg-STlD-3O0qE7uBvDYbUq5n-jx8YvfeDe1G2_dzatPWBJzfBLMBAhSqInvqse-4P_vKQNqG2Nqq8oh1H3bGnSK7-8_nrIVzwk6aUf1k_Py_-sSzBJiTOYbpuCNGR0wBp1aUMEvabX708cwGvhJ5fOSKcePvZXTz2TbaVzOMrAfkJlhht4HEmvTP_z15CIPROzA",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"title\": \"Microwave\",\r\n    \"description\": \"This is an appliance.\",\r\n    \"price\": 5000\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ecommerce_url}}/product",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"product"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiI2MWM3MmVlOC01ZDU2LTRlZDEtOTUxYy00OWJiODgwYWZhZmMiLCJldmVudF9pZCI6Ijg4ZjhjZDdhLTQ5MTItNGUxOC04YjU2LWE0MTY3Yjc2ZDIxMyIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4gb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzM5NTA1MzA4LCJleHAiOjE3Mzk1OTE3MDgsImlhdCI6MTczOTUwNTMwOCwianRpIjoiMTk4M2FiMWYtNDk1ZS00N2EwLThmMjAtNzczN2RkOGEwMzNhIiwidXNlcm5hbWUiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MifQ.lLwrfsoe8PA0Krtk5WQGRhgXIrh4dUBKgri4W7exHkzA2dAGAQwnfaQMsQxXayDC32wole1gbT2Ugg8RGk17KxHRfrZf5Vsw10W7-MXnsMjMw0eWW65cUkc1qhp90ht44vt2oSgoZ_fYi-X0y38hq245fGsmCCW0AHq1ik_S5BcvTaj45Y5dcN0ZSgnn_cYsy-VhtMP6TdP3QfiTQGHN9NdRQQnA-do_vObDbWxr_NfGyYGFceN7QSmRSQhCL25o3UVYZTvrv5Ri9-vwmOAoVyn7zcVDS_K1aMDOQPe5RlEyuzpVSKRbYO2tkMkGRe9n5U3agtnZueTkH-1F8DtIqg",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"categoryId\": 8,\r\n    \"stock\": 3\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ecommerce_url}}/product/2",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"product",
+												"2"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiI1MWI3YjllMC1lNmFiLTQ3N2UtODViYi0xYTg2NmU0NTgxOTUiLCJldmVudF9pZCI6IjY5NTIyODE1LTI0MDctNGU5NS04ZDE4LWIzNWRhOGI1ZmZkNiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4gb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzM5MzkxMzYxLCJleHAiOjE3Mzk0Nzc3NjEsImlhdCI6MTczOTM5MTM2MSwianRpIjoiYTA3NDZhNzMtZGUyYy00ZmU2LTkyYzYtNzM0ZTg0Y2VjNDlkIiwidXNlcm5hbWUiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MifQ.sIQL9CfQEidbvaaMSmzk-8flyt2yAPEPMaISnQzErp8Iqg1tEwML1ZUsb4tq_PHRjjl5grwboU-_KeIUCXQflDeKSvryhRDoQEPjA0PcBdPas1X2QG87TR89_QyxDwOMM_v8U_RX9OjwdO7VfcaHg-STlD-3O0qE7uBvDYbUq5n-jx8YvfeDe1G2_dzatPWBJzfBLMBAhSqInvqse-4P_vKQNqG2Nqq8oh1H3bGnSK7-8_nrIVzwk6aUf1k_Py_-sSzBJiTOYbpuCNGR0wBp1aUMEvabX708cwGvhJ5fOSKcePvZXTz2TbaVzOMrAfkJlhht4HEmvTP_z15CIPROzA",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{ecommerce_url}}/product/0",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"product",
+												"0"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "GET",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiI1MWI3YjllMC1lNmFiLTQ3N2UtODViYi0xYTg2NmU0NTgxOTUiLCJldmVudF9pZCI6IjY5NTIyODE1LTI0MDctNGU5NS04ZDE4LWIzNWRhOGI1ZmZkNiIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4gb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzM5MzkxMzYxLCJleHAiOjE3Mzk0Nzc3NjEsImlhdCI6MTczOTM5MTM2MSwianRpIjoiYTA3NDZhNzMtZGUyYy00ZmU2LTkyYzYtNzM0ZTg0Y2VjNDlkIiwidXNlcm5hbWUiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MifQ.sIQL9CfQEidbvaaMSmzk-8flyt2yAPEPMaISnQzErp8Iqg1tEwML1ZUsb4tq_PHRjjl5grwboU-_KeIUCXQflDeKSvryhRDoQEPjA0PcBdPas1X2QG87TR89_QyxDwOMM_v8U_RX9OjwdO7VfcaHg-STlD-3O0qE7uBvDYbUq5n-jx8YvfeDe1G2_dzatPWBJzfBLMBAhSqInvqse-4P_vKQNqG2Nqq8oh1H3bGnSK7-8_nrIVzwk6aUf1k_Py_-sSzBJiTOYbpuCNGR0wBp1aUMEvabX708cwGvhJ5fOSKcePvZXTz2TbaVzOMrAfkJlhht4HEmvTP_z15CIPROzA",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "{{ecommerce_url}}/product?pageSize=10&page=2&orderField=1&orderType=ASC&categorySlug=Consoles",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"product"
+											],
+											"query": [
+												{
+													"key": "pageSize",
+													"value": "10"
+												},
+												{
+													"key": "page",
+													"value": "2"
+												},
+												{
+													"key": "orderField",
+													"value": "1"
+												},
+												{
+													"key": "orderType",
+													"value": "ASC"
+												},
+												{
+													"key": "id",
+													"value": "1",
+													"disabled": true
+												},
+												{
+													"key": "search",
+													"value": "best",
+													"disabled": true
+												},
+												{
+													"key": "slug",
+													"value": "",
+													"disabled": true
+												},
+												{
+													"key": "categoryId",
+													"value": "7",
+													"disabled": true
+												},
+												{
+													"key": "categorySlug",
+													"value": "Consoles"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Stock",
+							"item": [
+								{
+									"name": "Update",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiI2MWM3MmVlOC01ZDU2LTRlZDEtOTUxYy00OWJiODgwYWZhZmMiLCJldmVudF9pZCI6Ijg4ZjhjZDdhLTQ5MTItNGUxOC04YjU2LWE0MTY3Yjc2ZDIxMyIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4gb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzM5NTA1MzA4LCJleHAiOjE3Mzk1OTE3MDgsImlhdCI6MTczOTUwNTMwOCwianRpIjoiMTk4M2FiMWYtNDk1ZS00N2EwLThmMjAtNzczN2RkOGEwMzNhIiwidXNlcm5hbWUiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MifQ.lLwrfsoe8PA0Krtk5WQGRhgXIrh4dUBKgri4W7exHkzA2dAGAQwnfaQMsQxXayDC32wole1gbT2Ugg8RGk17KxHRfrZf5Vsw10W7-MXnsMjMw0eWW65cUkc1qhp90ht44vt2oSgoZ_fYi-X0y38hq245fGsmCCW0AHq1ik_S5BcvTaj45Y5dcN0ZSgnn_cYsy-VhtMP6TdP3QfiTQGHN9NdRQQnA-do_vObDbWxr_NfGyYGFceN7QSmRSQhCL25o3UVYZTvrv5Ri9-vwmOAoVyn7zcVDS_K1aMDOQPe5RlEyuzpVSKRbYO2tkMkGRe9n5U3agtnZueTkH-1F8DtIqg",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"stock\": -3\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ecommerce_url}}/stock/2",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"stock",
+												"2"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "ecommerce-for-s3",
+					"item": [
+						{
+							"name": "UploadItem",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJraWQiOiJxcG1aclwvb09FSGE2NW1SNno2SWc1TXZvODJPZFNEU0JrZU9XXC8xTHhlYWc9IiwiYWxnIjoiUlMyNTYifQ.eyJhdF9oYXNoIjoidzJfNlVyU1lzaTNDVEw0a1BVNTZYUSIsInN1YiI6IjA0Mzg4NGY4LWIwYTEtNzA0Yi05NzNjLWJiODMxNWM3ZDQ3YyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJjb2duaXRvOnVzZXJuYW1lIjoiMDQzODg0ZjgtYjBhMS03MDRiLTk3M2MtYmI4MzE1YzdkNDdjIiwib3JpZ2luX2p0aSI6ImY0MDliNDJkLTViY2YtNDIzNi04OWJjLTkzODMyNWM3ZTI2NiIsImF1ZCI6IjNxZmMwdjVwbG92MTE0bjcwODJ2YnU2OGE0IiwiZXZlbnRfaWQiOiJhNjk1YzU4Yy1mMmJhLTQ3NjMtOTc3Zi1kMzMwN2Y1ZmNkZTciLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTczNzcwODAyOSwiZXhwIjoxNzM3Nzk0NDI5LCJpYXQiOjE3Mzc3MDgwMjksImp0aSI6Ijc4MGJmYTJhLWNlYjEtNGU4Mi04NDM3LTdhZWM0M2M4OTJkMiIsImVtYWlsIjoiYW1hcmlsbG8xN2N5bEBnbWFpbC5jb20ifQ.3yUHLML5P_1cXsilhCcsqTcy1jRoD7-QMC1SI5rh6jzW57ylnWKdmoAS27V6ueCnRJQ_pnABHCukxMXB62kbV5Fk4SwbSwjsDwH3tacX0C657NjwRrDTtiXk1QqjwHaH44oOrqiZyIUb4oBFwwjdAM3sGdFO0nstosPGq265wzcGRBWLSsDx0Qh8mXD0beFEPSkoTqy0_CeTLyY216rk-odTZraoYLHbp3jH2QcnH9rptDv_CIlMWCWEO7WbZd97uKtqN4hPvg8qFhqvMocTLAlfwCwEJjNnlv7yTJTB4AfVf3Hl5nk5MzG4Yl5L2Xl1DVhAYhk09LonwlSm_UzMqw",
+										"type": "text"
+									}
+								],
+								"body": {
+									"mode": "file",
+									"file": {
+										"src": "/C:/Users/amari/Documents/Go/images/avatar.jpg"
+									}
+								},
+								"url": {
+									"raw": "{{upload_url}}/ecommerce-app-jlrg/avatar.jpg",
+									"host": [
+										"{{upload_url}}"
+									],
+									"path": [
+										"ecommerce-app-jlrg",
+										"avatar.jpg"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "GetItem",
+							"request": {
+								"auth": {
+									"type": "noauth"
+								},
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "eyJraWQiOiJxcG1aclwvb09FSGE2NW1SNno2SWc1TXZvODJPZFNEU0JrZU9XXC8xTHhlYWc9IiwiYWxnIjoiUlMyNTYifQ.eyJhdF9oYXNoIjoiT3MtZ0RXVkU3bEVnTUlLQ2tFTFUxdyIsInN1YiI6IjA0Mzg4NGY4LWIwYTEtNzA0Yi05NzNjLWJiODMxNWM3ZDQ3YyIsImVtYWlsX3ZlcmlmaWVkIjp0cnVlLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJjb2duaXRvOnVzZXJuYW1lIjoiMDQzODg0ZjgtYjBhMS03MDRiLTk3M2MtYmI4MzE1YzdkNDdjIiwib3JpZ2luX2p0aSI6IjNhZmUwN2JiLWVmZGUtNDAwNS05N2Y1LWFmMTliYTY0ZjFmYyIsImF1ZCI6IjNxZmMwdjVwbG92MTE0bjcwODJ2YnU2OGE0IiwiZXZlbnRfaWQiOiIxMGNlZWI3Yy04YzY4LTQxOGMtYjg4OS1iYzY0YWYwMTZlYzgiLCJ0b2tlbl91c2UiOiJpZCIsImF1dGhfdGltZSI6MTczODg4MjEyNSwiZXhwIjoxNzM4OTY4NTI1LCJpYXQiOjE3Mzg4ODIxMjUsImp0aSI6ImIxNzJmZDhmLTBjNzEtNDFlNC05OWQ5LWYzOTNhMWI4NTEwNiIsImVtYWlsIjoiYW1hcmlsbG8xN2N5bEBnbWFpbC5jb20ifQ.iAw4AuI2tbMobJ3OxQtytD1GVU7ajx3cMfz78q_i6wfXUUhT8pkAJc_uAN1yuwR3zGTCLoPukmoCIHRO8dg2v2De10LbOU4vOtDzmdHKEA-8-fKPbs6URKU66IxA50qAn5p2xFKxXqnV88jPOd7el2gUDYugGJAjxcwZsNkW8eH1shynng3nJP0itZy5lf_jpjs5i8lFuaDV8gFA93qgX25sUJbVSGL_r_4e0UjinwBhwPX3vcIVL98I6oK8vt6PNo1_LIerY2jW5AqxhUAu4dRDMxMEFH0QSEvZ_Zsl_NjJXY8mlSYNBRJSaOUp3uINLrSRcNUBhqTt7skZMMateg",
+										"type": "text"
+									},
+									{
+										"key": "Content-Type",
+										"value": "application/xml",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{upload_url}}/ecommerce-app-jlrg/avatar.jpg",
+									"host": [
+										"{{upload_url}}"
+									],
+									"path": [
+										"ecommerce-app-jlrg",
+										"avatar.jpg"
+									]
+								}
+							},
+							"response": []
+						},
+						{
+							"name": "ListBucket",
+							"request": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Authorization",
+										"value": "",
+										"type": "text"
+									}
+								],
+								"url": {
+									"raw": "{{upload_url}}/ecommerce-app-jlrg",
+									"host": [
+										"{{upload_url}}"
+									],
+									"path": [
+										"ecommerce-app-jlrg"
+									]
+								}
+							},
+							"response": []
+						}
+					]
+				}
+			]
+		}
+	]
+}
