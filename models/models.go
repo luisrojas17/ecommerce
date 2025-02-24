@@ -19,8 +19,13 @@ type Secret struct {
 // This structure wraps all user data registered in Cognito and database.
 // See users table in database.
 type User struct {
-	Email string `json:"UserEmail"`
-	Uuid  string `json:"UserUUID"`
+	Uuid      string `json:uuid"`
+	Email     string `json:"email"`
+	FirstName string `json:"firstName"`
+	LastName  string `json:"lastName"`
+	Status    string `json:"status"`
+	CreatedAt string `json:"createdAt"`
+	UpdatedAt string `json:"updatedAt"`
 }
 
 // This structure wrpas all category's data.

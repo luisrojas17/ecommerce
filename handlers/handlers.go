@@ -15,6 +15,23 @@ import (
 // when any API request can not be handled.
 const METHOD_INVALID = "Method Invalid."
 
+// This method handle all requests received by API Gagteway.
+// Before to process the request, the method validate the request in order to know if
+// the request will be processed or not. If the request contains a valid access_token
+// the request will be passed accodding to path provided.
+//
+// Parameters:
+//
+//	path is an string which contains the path used in the URL. The possible pats can be:
+//		category, product, stock, user.
+//	method is an string which contains the method HTTP for which the request was sent it.
+//	body is an string which contains the body sent by HTTP request. This is required for
+//		create and update operations.
+//	headers is an string which contains Authorization which store the access token
+//		to authorize the request.
+//	request is an events.APIGatewayV2HTTPRequest object which contains all data related to
+//		request. For example: query parameters, path parameters
+//
 // Returns the HTTP status code and message to describe the error.
 func Handler(path string, method string, body string, headers map[string]string, request events.APIGatewayV2HTTPRequest) (int, string) {
 
@@ -27,10 +44,11 @@ func Handler(path string, method string, body string, headers map[string]string,
 
 	// Check if token is valid and it had not expired.
 	// Make sure to use the access_token in order to the validation can get the Username attribute.
-	ok, statusCode, user := authorize(path, method, headers)
+	// The username is the id for AWS Cognito and this is the same value for database userUUID
+	ok, statusCode, username := authorize(path, method, headers)
 
 	if !ok {
-		return statusCode, user
+		return statusCode, username
 	}
 
 	// To Do: process path in order to split from token "/" instead of use UrlPrefix variable.
@@ -41,22 +59,22 @@ func Handler(path string, method string, body string, headers map[string]string,
 	switch operation[0] {
 
 	case "user":
-		return Users(body, path, method, user, id, request)
+		return Users(body, path, method, username, id, request)
 
 	case "product":
-		return Products(body, path, method, user, idn, request)
+		return Products(body, path, method, username, idn, request)
 
 	case "stock":
-		return Stock(body, path, method, user, idn, request)
+		return Stock(body, path, method, username, idn, request)
 
 	case "address":
-		return Address(body, path, method, user, idn, request)
+		return Address(body, path, method, username, idn, request)
 
 	case "category":
-		return Categories(body, path, method, user, idn, request)
+		return Categories(body, path, method, username, idn, request)
 
 	case "order":
-		return Orders(body, path, method, user, idn, request)
+		return Orders(body, path, method, username, idn, request)
 
 	default:
 		fmt.Println("The request couldn't be processing.")
@@ -66,6 +84,18 @@ func Handler(path string, method string, body string, headers map[string]string,
 
 }
 
+// This method validate the access_token in order to authorize the request received
+// by the API Gateway. The access_token is contained in headers parameter like:
+//
+//	Authorization: access_token_value
+//
+// If the access_token is valid there will be returned:
+//
+//	boolean value to specify if the token is valid.
+//	int value to specify HTTP code status. For example, if the request was process successful
+//		and the access_token was valid the value to return will be 200. 401 for any other case.
+//	string value which represents the username/user uuid if the token was valid. Error description
+//		for any other case.
 func authorize(path string, method string, headers map[string]string) (bool, int, string) {
 
 	// For this options the API does not have to validate the token.
@@ -84,6 +114,7 @@ func authorize(path string, method string, headers map[string]string) (bool, int
 
 	// Validate token.
 	// If the token is validated correctly, the msg variable will contain Username.
+	// Username is the id for AWS cognito. This is the same value for UserUUID in the database
 	ok, err, msg := auth.Validate(token)
 
 	if !ok {
@@ -106,13 +137,21 @@ func authorize(path string, method string, headers map[string]string) (bool, int
 
 }
 
-func Users(body string, path string, method string, user string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+// The user id is gotten from authorization process
+func Users(body string, path string, method string, userId string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
+
+	if path == "user/me" {
+		switch method {
+		case "PUT":
+			return routers.UpdateUser(body, userId)
+		}
+	}
 
 	return 400, METHOD_INVALID
 }
 
 // This API handled all CRUD operations related to products table.
-func Products(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
+func Products(body string, path string, method string, userId string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 
 	switch method {
 	case "POST":
@@ -122,17 +161,17 @@ func Products(body string, path string, method string, user string, id int, requ
 		//		"description": "This is an appliance.",
 		//		"price": 5000
 		//	}
-		return routers.CreateProduct(body, user)
+		return routers.CreateProduct(body, userId)
 	case "PUT":
 		// HOST + /v1/ecommerce/product/{id}
 		//	{
 		//		"categoryId": 8,
 		//		"stock": 3
 		//	}
-		return routers.UpdateProduct(body, user, id)
+		return routers.UpdateProduct(body, userId, id)
 	case "DELETE":
 		// HOST + /v1/ecommerce/product/{id}
-		return routers.DeleteProduct(user, id)
+		return routers.DeleteProduct(userId, id)
 	case "GET":
 		// HOST + /v1/ecommerce/product?pageSize=10&page=2&orderField=1&orderType=ASC&id=1&search=best&slug=&categoryId=7&categorySlug=Consoles
 		return routers.GetProducts(request)
@@ -145,7 +184,7 @@ func Products(body string, path string, method string, user string, id int, requ
 }
 
 // This API handled all CRUD operations related to category table.
-func Categories(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
+func Categories(body string, path string, method string, userId string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 
 	switch method {
 	case "POST":
@@ -154,16 +193,16 @@ func Categories(body string, path string, method string, user string, id int, re
 		//		"name": "Video Games",
 		//		"path": "Consoles"
 		//	}
-		return routers.CreateCategory(body, user)
+		return routers.CreateCategory(body, userId)
 	case "PUT":
 		// HOST + /v1/ecommerce/category/{id}
 		//	{
 		//		"name": "Instrumentos Musicales"
 		//	}
-		return routers.UpdateCategory(body, user, id)
+		return routers.UpdateCategory(body, userId, id)
 	case "DELETE":
 		// HOST + /v1/ecommerce/category/{id}
-		return routers.DeleteCategory(user, id)
+		return routers.DeleteCategory(userId, id)
 	case "GET":
 		// HOST + /v1/ecommerce/category?slug=Television&categId=7
 		return routers.GetCategories(request)
@@ -177,9 +216,9 @@ func Categories(body string, path string, method string, user string, id int, re
 
 // This API receive product id to update stock field in products table.
 // Host + /v1/ecommerce/stock/{id}
-func Stock(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
+func Stock(body string, path string, method string, userId string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 
-	return routers.UpdateStock(body, user, id)
+	return routers.UpdateStock(body, userId, id)
 
 }
 

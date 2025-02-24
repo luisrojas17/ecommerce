@@ -21,8 +21,16 @@ type Token struct {
 	Username  string
 }
 
-// This function vaidate the token. If the token is not valid
+// This function vaidate the token.
 // The token expected must be access_token because this contains the Username attribute.
+//
+// The values returned are:
+//
+//	boolean value to specify if the token is valid.
+//	error value to specify if there was any error during process the validation
+//		nil for any any other case.
+//	string value which represents the username (id) store in AWS Cognito. This is the user uuid
+//		to use in database or error description for any other case.
 func Validate(token string) (
 	bool,
 	error,
@@ -72,6 +80,7 @@ func Validate(token string) (
 	}
 
 	// Get Username from access_token.
+	// This is the same value to use in database. I mean, user uuid.
 	return true, nil, string(t.Username)
 
 }
