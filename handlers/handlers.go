@@ -137,13 +137,26 @@ func authorize(path string, method string, headers map[string]string) (bool, int
 
 }
 
-// The user id is gotten from authorization process
+// This method process all request related to user path.
 func Users(body string, path string, method string, userId string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
 
 	if path == "user/me" {
 		switch method {
 		case "PUT":
+			//Check if it is possible to update status field.
+			//HOST + /v1/ecommerce/user/me
+			//	{
+			//		"firstName": "Jose Luis",
+			//		"lastName": "Rojas Gomez"
+			//	}
 			return routers.UpdateUser(body, userId)
+		case "GET":
+			//HOST + /v1/ecommerce/user/me
+			return routers.GetUser(userId)
+		default:
+			fmt.Println("HTTP Method: [" + method + "] not found.")
+
+			return 400, METHOD_INVALID
 		}
 	}
 

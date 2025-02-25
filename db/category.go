@@ -166,6 +166,8 @@ func GetCategories(id int, slug string) ([]models.Category, error) {
 		return categories, err
 	}
 
+	defer rows.Close()
+
 	for rows.Next() {
 		var category models.Category
 
