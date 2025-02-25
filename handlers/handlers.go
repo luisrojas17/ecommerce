@@ -138,6 +138,7 @@ func authorize(path string, method string, headers map[string]string) (bool, int
 }
 
 // This method process all request related to user path.
+// To consume this endpoint the request must contain an valid access_token.
 func Users(body string, path string, method string, userId string, id string, request events.APIGatewayV2HTTPRequest) (int, string) {
 
 	if path == "user/me" {
@@ -157,6 +158,12 @@ func Users(body string, path string, method string, userId string, id string, re
 			fmt.Println("HTTP Method: [" + method + "] not found.")
 
 			return 400, METHOD_INVALID
+		}
+	}
+
+	if path == "user/all" {
+		if method == "GET" {
+			return routers.GetUsers(userId, request)
 		}
 	}
 

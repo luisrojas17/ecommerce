@@ -2,7 +2,10 @@ package routers
 
 import (
 	"encoding/json"
+	"fmt"
+	"strconv"
 
+	"github.com/aws/aws-lambda-go/events"
 	"github.com/luisrojas17/ecommerce/db"
 	"github.com/luisrojas17/ecommerce/models"
 )
@@ -56,4 +59,45 @@ func GetUser(userId string) (int, string) {
 	}
 
 	return 200, string(jsonUser)
+}
+
+func GetUsers(userId string, request events.APIGatewayV2HTTPRequest) (int, string) {
+
+	var page, pageSize int
+	var err error
+
+	page, err = strconv.Atoi(request.QueryStringParameters["page"])
+	if err != nil || page == 0 {
+		page = 1
+	}
+
+	pageSize, err = strconv.Atoi(request.QueryStringParameters["pageSize"])
+	if err != nil || pageSize > 25 {
+		pageSize = 25
+	}
+
+	isAdmin, msg := db.IsAdmin(userId)
+	if !isAdmin {
+		fmt.Println("Only admin users can update product' stock.")
+		return 400, msg
+	}
+
+	var pageable models.PageableUsers
+	pageable, err = db.GetUsers(page, pageSize)
+
+	if err != nil {
+		return 400, "It was an error to get users by [id:" + userId + "].\n" + err.Error()
+	}
+
+	var jsonPageable []byte
+	jsonPageable, err = json.Marshal(pageable)
+	if err != nil {
+		return 400, "It was an error to convert users to JSON format.\n" + err.Error()
+	}
+
+	if pageable.TotalElements == 0 {
+		return 201, "There were not users related to user id: " + userId + "."
+	}
+
+	return 200, string(jsonPageable)
 }

@@ -13,7 +13,7 @@ import (
 	"github.com/luisrojas17/ecommerce/models"
 )
 
-func CreateProduct(body string, user string) (int, string) {
+func CreateProduct(body string, userId string) (int, string) {
 
 	var product models.Product
 
@@ -27,7 +27,7 @@ func CreateProduct(body string, user string) (int, string) {
 		return 400, "You must specify product's title."
 	}
 
-	isAdmin, msg := db.IsAdmin(user)
+	isAdmin, msg := db.IsAdmin(userId)
 	if !isAdmin {
 		fmt.Println("Only admin users can create new products.")
 		return 400, msg
@@ -43,7 +43,7 @@ func CreateProduct(body string, user string) (int, string) {
 	return 200, "{ id: " + strconv.Itoa(int(result)) + " }"
 }
 
-func UpdateProduct(body string, user string, id int) (int, string) {
+func UpdateProduct(body string, userId string, id int) (int, string) {
 
 	var product models.Product
 
@@ -54,7 +54,7 @@ func UpdateProduct(body string, user string, id int) (int, string) {
 		return 400, "It was an error to convert product' model to JSON format. " + err.Error()
 	}
 
-	isAdmin, msg := db.IsAdmin(user)
+	isAdmin, msg := db.IsAdmin(userId)
 	if !isAdmin {
 		fmt.Println("Only admin users can update products.")
 		return 400, msg
@@ -70,13 +70,13 @@ func UpdateProduct(body string, user string, id int) (int, string) {
 	return 200, "Product Id: " + strconv.Itoa(id) + " was updated successfully."
 }
 
-func DeleteProduct(user string, id int) (int, string) {
+func DeleteProduct(userId string, id int) (int, string) {
 
 	if id == 0 {
 		return 412, "To delete any product you must specify the id since it is mandatory and it must be greater than 0."
 	}
 
-	isAdmin, msg := db.IsAdmin(user)
+	isAdmin, msg := db.IsAdmin(userId)
 	if !isAdmin {
 		fmt.Println("Only admin users can delete products.")
 		return 400, msg
@@ -142,7 +142,7 @@ func GetProducts(request events.APIGatewayV2HTTPRequest) (int, string) {
 
 }
 
-func UpdateStock(body string, user string, id int) (int, string) {
+func UpdateStock(body string, userId string, id int) (int, string) {
 
 	var product models.Product
 
@@ -153,7 +153,7 @@ func UpdateStock(body string, user string, id int) (int, string) {
 		return 400, "It was an error to convert product stock's model to JSON format. " + err.Error()
 	}
 
-	isAdmin, msg := db.IsAdmin(user)
+	isAdmin, msg := db.IsAdmin(userId)
 	if !isAdmin {
 		fmt.Println("Only admin users can update product' stock.")
 		return 400, msg

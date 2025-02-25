@@ -56,3 +56,8 @@ type Pageable struct {
 	TotalElements int       `json:"totalElements"`
 	Content       []Product `json:"content"`
 }
+
+type PageableUsers struct {
+	TotalElements int    `json:"totalElements"`
+	Content       []User `json:"content"`
+}

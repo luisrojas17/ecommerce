@@ -213,7 +213,7 @@ func GetProducts(product models.Product, page int, pageSize int, orderType strin
 	rows, err = Connection.Query(countStatement)
 
 	if err != nil {
-		fmt.Println("It was an error to execute query: \n" + statement + ".\n" + err.Error())
+		fmt.Println("It was an error to execute query: \n" + countStatement + ".\n" + err.Error())
 		return pageable, err
 	}
 
@@ -225,7 +225,7 @@ func GetProducts(product models.Product, page int, pageSize int, orderType strin
 	err = rows.Scan(&totalRecords)
 
 	if err != nil {
-		fmt.Println("It was an error to get the total records for query: \n" + statement + ".\n" + err.Error())
+		fmt.Println("It was an error to get the total records for query: \n" + countStatement + ".\n" + err.Error())
 		return pageable, err
 	}
 
