@@ -3,6 +3,7 @@ package routers
 import (
 	"encoding/json"
 	"fmt"
+	"net/http"
 	"strconv"
 
 	"github.com/aws/aws-lambda-go/events"
@@ -17,27 +18,27 @@ func UpdateUser(body string, userId string) (int, string) {
 	err := json.Unmarshal([]byte(body), &userToUpdate)
 
 	if err != nil {
-		return 400, "It was an error to convert json user to model.\n" + err.Error()
+		return http.StatusBadRequest, "It was an error to convert json user to model.\n" + err.Error()
 	}
 
 	if len(userToUpdate.FirstName) == 0 && len(userToUpdate.LastName) == 0 {
-		return 400, "You must specify User's first or last name."
+		return http.StatusPreconditionFailed, "You must specify User's first or last name."
 	}
 
 	existUser, _ := db.ExistUser(userId)
 
 	if !existUser {
-		return 400, "The user " + userId + " does not exist."
+		return http.StatusNotFound, "The user " + userId + " does not exist."
 	}
 
 	userToUpdate.Uuid = userId
 
 	err = db.UpdateUser(userToUpdate)
 	if err != nil {
-		return 400, "It was an error to update the user: " + userId + ".\n" + err.Error()
+		return http.StatusBadRequest, "It was an error to update the user: " + userId + ".\n" + err.Error()
 	}
 
-	return 200, "User Id: " + userId + " was updated successfully."
+	return http.StatusOK, "User Id: " + userId + " was updated successfully."
 }
 
 func GetUser(userId string) (int, string) {
@@ -45,20 +46,20 @@ func GetUser(userId string) (int, string) {
 	existUser, _ := db.ExistUser(userId)
 
 	if !existUser {
-		return 400, "The user " + userId + " does not exist."
+		return http.StatusNotFound, "The user " + userId + " does not exist."
 	}
 
 	user, err := db.GetUser(userId)
 	if err != nil {
-		return 400, "It was an error to get user " + userId + ".\n" + err.Error()
+		return http.StatusBadRequest, "It was an error to get user " + userId + ".\n" + err.Error()
 	}
 
 	jsonUser, err := json.Marshal(user)
 	if err != nil {
-		return 400, "It was an error to convert user to JSON format.\n" + err.Error()
+		return http.StatusBadRequest, "It was an error to convert user to JSON format.\n" + err.Error()
 	}
 
-	return 200, string(jsonUser)
+	return http.StatusOK, string(jsonUser)
 }
 
 func GetUsers(userId string, request events.APIGatewayV2HTTPRequest) (int, string) {
@@ -79,25 +80,25 @@ func GetUsers(userId string, request events.APIGatewayV2HTTPRequest) (int, strin
 	isAdmin, msg := db.IsAdmin(userId)
 	if !isAdmin {
 		fmt.Println("Only admin users can update product' stock.")
-		return 400, msg
+		return http.StatusPreconditionFailed, msg
 	}
 
 	var pageable models.PageableUsers
 	pageable, err = db.GetUsers(page, pageSize)
 
 	if err != nil {
-		return 400, "It was an error to get users by [id:" + userId + "].\n" + err.Error()
+		return http.StatusBadRequest, "It was an error to get users by [id:" + userId + "].\n" + err.Error()
 	}
 
 	var jsonPageable []byte
 	jsonPageable, err = json.Marshal(pageable)
 	if err != nil {
-		return 400, "It was an error to convert users to JSON format.\n" + err.Error()
+		return http.StatusBadRequest, "It was an error to convert users to JSON format.\n" + err.Error()
 	}
 
 	if pageable.TotalElements == 0 {
-		return 201, "There were not users related to user id: " + userId + "."
+		return http.StatusNoContent, "There were not users related to user id: " + userId + "."
 	}
 
-	return 200, string(jsonPageable)
+	return http.StatusOK, string(jsonPageable)
 }

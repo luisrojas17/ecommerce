@@ -2,12 +2,14 @@ package handlers
 
 import (
 	"fmt"
+	"net/http"
 	"strconv"
 	"strings"
 
 	"github.com/aws/aws-lambda-go/events"
 
 	"github.com/luisrojas17/ecommerce/auth"
+	"github.com/luisrojas17/ecommerce/helper"
 	"github.com/luisrojas17/ecommerce/routers"
 )
 
@@ -77,9 +79,9 @@ func Handler(path string, method string, body string, headers map[string]string,
 		return Orders(body, path, method, username, idn, request)
 
 	default:
-		fmt.Println("The request couldn't be processing.")
+		fmt.Println("The request couldn't be processed.")
 
-		return 400, METHOD_INVALID
+		return http.StatusBadRequest, METHOD_INVALID
 	}
 
 }
@@ -102,14 +104,14 @@ func authorize(path string, method string, headers map[string]string) (bool, int
 	if (path == "product" && method == "GET") ||
 		(path == "category" && method == "GET") {
 
-		return true, 200, ""
+		return true, http.StatusOK, helper.EMPTY_STRING
 	}
 
 	// Get the token from headers.
 	// The token to use must be the access_token in order to the validation process can get the Username attribute.
 	token := headers["authorization"]
 	if len(token) == 0 {
-		return false, 401, "The token is mandatory to authenticate the requests."
+		return false, http.StatusUnauthorized, "The token is mandatory to authenticate the requests."
 	}
 
 	// Validate token.
@@ -121,9 +123,9 @@ func authorize(path string, method string, headers map[string]string) (bool, int
 		if err != nil {
 			errorMsg := err.Error()
 
-			fmt.Println("Error", errorMsg)
+			fmt.Println("Error: ", errorMsg)
 
-			return false, 401, errorMsg
+			return false, http.StatusUnauthorized, errorMsg
 
 		} else {
 			fmt.Println("Token error: ", msg)
@@ -133,7 +135,7 @@ func authorize(path string, method string, headers map[string]string) (bool, int
 
 	fmt.Println("Token is Ok.")
 
-	return true, 200, msg
+	return true, http.StatusOK, msg
 
 }
 
@@ -157,7 +159,7 @@ func Users(body string, path string, method string, userId string, id string, re
 		default:
 			fmt.Println("HTTP Method: [" + method + "] not found.")
 
-			return 400, METHOD_INVALID
+			return http.StatusBadRequest, METHOD_INVALID
 		}
 	}
 
@@ -167,7 +169,7 @@ func Users(body string, path string, method string, userId string, id string, re
 		}
 	}
 
-	return 400, METHOD_INVALID
+	return http.StatusBadRequest, METHOD_INVALID
 }
 
 // This API handled all CRUD operations related to products table.
@@ -198,7 +200,7 @@ func Products(body string, path string, method string, userId string, id int, re
 	default:
 		fmt.Println("HTTP Method: [" + method + "] not found.")
 
-		return 400, METHOD_INVALID
+		return http.StatusBadRequest, METHOD_INVALID
 	}
 
 }
@@ -229,7 +231,7 @@ func Categories(body string, path string, method string, userId string, id int, 
 	default:
 		fmt.Println("HTTP Method: [" + method + "] not found.")
 
-		return 400, METHOD_INVALID
+		return http.StatusBadRequest, METHOD_INVALID
 	}
 
 }
@@ -242,12 +244,20 @@ func Stock(body string, path string, method string, userId string, id int, reque
 
 }
 
-func Address(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
+func Address(body string, path string, method string, userId string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 
-	return 400, METHOD_INVALID
+	switch method {
+	case "POST":
+		return routers.CreateAddress(body, userId)
+	default:
+		fmt.Println("HTTP Method: [" + method + "] not found.")
+
+		return http.StatusBadRequest, METHOD_INVALID
+	}
+
 }
 
-func Orders(body string, path string, method string, user string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
+func Orders(body string, path string, method string, userId string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 
-	return 400, METHOD_INVALID
+	return http.StatusBadRequest, METHOD_INVALID
 }

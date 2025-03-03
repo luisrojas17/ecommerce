@@ -28,7 +28,7 @@ type User struct {
 	UpdatedAt string `json:"updatedAt"`
 }
 
-// This structure wrpas all category's data.
+// This structure wraps all category's data.
 // See category table in database.
 type Category struct {
 	Id   int    `json:"id"`
@@ -36,7 +36,7 @@ type Category struct {
 	Path string `json:"path"`
 }
 
-// This structure wrpas all products' data.
+// This structure wraps all products' data.
 // See products table in database.
 type Product struct {
 	Id           int     `json:"id"`
@@ -60,4 +60,15 @@ type Pageable struct {
 type PageableUsers struct {
 	TotalElements int    `json:"totalElements"`
 	Content       []User `json:"content"`
+}
+
+type Address struct {
+	Id         int    `json:"id"`
+	Title      string `json:"title"`
+	Street     string `json:"street"`
+	City       string `json:"city"`
+	State      string `json:"state"`
+	PostalCode string `json:"postalCode"`
+	Phone      string `json:"phone"`
+	UserName   string `json:"userName"`
 }
