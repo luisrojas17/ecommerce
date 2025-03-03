@@ -249,6 +249,8 @@ func Address(body string, path string, method string, userId string, id int, req
 	switch method {
 	case "POST":
 		return routers.CreateAddress(body, userId)
+	case "PUT":
+		return routers.UpdateAddress(body, userId, id)
 	default:
 		fmt.Println("HTTP Method: [" + method + "] not found.")
 
