@@ -76,7 +76,7 @@
 								},
 								{
 									"key": "code",
-									"value": "1993b36e-6db6-4f81-8760-9805e8988ab3",
+									"value": "78133b96-d522-4eda-ba16-d73699993db4",
 									"type": "text"
 								},
 								{
@@ -411,7 +411,7 @@
 									"response": []
 								},
 								{
-									"name": "GET",
+									"name": "Get",
 									"request": {
 										"method": "GET",
 										"header": [
@@ -479,7 +479,7 @@
 							]
 						},
 						{
-							"name": "Stock",
+							"name": "stock",
 							"item": [
 								{
 									"name": "Update",
@@ -508,6 +508,243 @@
 											],
 											"path": [
 												"stock",
+												"2"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "user",
+							"item": [
+								{
+									"name": "Update",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiIwYzE2MzcxZC0yYjk2LTQ3ZTMtYWVhMS02ZDBmOTIxODMwMjkiLCJldmVudF9pZCI6IjVkZWU2MTc0LWE0NjMtNGI0YS05YjcwLTc4NzMzMjlkODk0MCIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4gb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzQwNDMxMjY3LCJleHAiOjE3NDA1MTc2NjcsImlhdCI6MTc0MDQzMTI2NywianRpIjoiOGUxN2RiYWQtMjNkZi00MjViLWJlMjEtOTEzMmQ2YWQ1NTEzIiwidXNlcm5hbWUiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MifQ.ms8wkwOJzS7iyBZ2cjYs_ETfjpGTLGu8tYk4XuEKP8rz0qfqilFyYVbt63-p4N7RdY8b7alaZAMknXcDfgXqSw4Ka6oDoGWkEKgKcGzqYXNnFAb3lz59bWMHcEq-tgIaux6j82u48oLZoVULtM9Z3nBLHE8HJeYa9WARx3gwzuOwx0DXsjC-MqoNk3hNyMddDkqtrneqcDQctT3npQpNTGIIvEDLwWJPMBzBdLwxUjn0bhjFAfKRhRUI4lPZD8idA77fgJUKP4dY_CrVcIfxjKFjU9nszFy9DPexHX0tRzc6I1aaJwfYOykRwsfdYtDDB0ZmBlL0l3ldh8bZ_BCZ-g",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"stock\": -3\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ecommerce_url}}/user/me",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"user",
+												"me"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiIwYzE2MzcxZC0yYjk2LTQ3ZTMtYWVhMS02ZDBmOTIxODMwMjkiLCJldmVudF9pZCI6IjVkZWU2MTc0LWE0NjMtNGI0YS05YjcwLTc4NzMzMjlkODk0MCIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4gb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzQwNDMxMjY3LCJleHAiOjE3NDA1MTc2NjcsImlhdCI6MTc0MDQzMTI2NywianRpIjoiOGUxN2RiYWQtMjNkZi00MjViLWJlMjEtOTEzMmQ2YWQ1NTEzIiwidXNlcm5hbWUiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MifQ.ms8wkwOJzS7iyBZ2cjYs_ETfjpGTLGu8tYk4XuEKP8rz0qfqilFyYVbt63-p4N7RdY8b7alaZAMknXcDfgXqSw4Ka6oDoGWkEKgKcGzqYXNnFAb3lz59bWMHcEq-tgIaux6j82u48oLZoVULtM9Z3nBLHE8HJeYa9WARx3gwzuOwx0DXsjC-MqoNk3hNyMddDkqtrneqcDQctT3npQpNTGIIvEDLwWJPMBzBdLwxUjn0bhjFAfKRhRUI4lPZD8idA77fgJUKP4dY_CrVcIfxjKFjU9nszFy9DPexHX0tRzc6I1aaJwfYOykRwsfdYtDDB0ZmBlL0l3ldh8bZ_BCZ-g",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ecommerce_url}}/user/me",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"user",
+												"me"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get users",
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiIwYzE2MzcxZC0yYjk2LTQ3ZTMtYWVhMS02ZDBmOTIxODMwMjkiLCJldmVudF9pZCI6IjVkZWU2MTc0LWE0NjMtNGI0YS05YjcwLTc4NzMzMjlkODk0MCIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4gb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzQwNDMxMjY3LCJleHAiOjE3NDA1MTc2NjcsImlhdCI6MTc0MDQzMTI2NywianRpIjoiOGUxN2RiYWQtMjNkZi00MjViLWJlMjEtOTEzMmQ2YWQ1NTEzIiwidXNlcm5hbWUiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MifQ.ms8wkwOJzS7iyBZ2cjYs_ETfjpGTLGu8tYk4XuEKP8rz0qfqilFyYVbt63-p4N7RdY8b7alaZAMknXcDfgXqSw4Ka6oDoGWkEKgKcGzqYXNnFAb3lz59bWMHcEq-tgIaux6j82u48oLZoVULtM9Z3nBLHE8HJeYa9WARx3gwzuOwx0DXsjC-MqoNk3hNyMddDkqtrneqcDQctT3npQpNTGIIvEDLwWJPMBzBdLwxUjn0bhjFAfKRhRUI4lPZD8idA77fgJUKP4dY_CrVcIfxjKFjU9nszFy9DPexHX0tRzc6I1aaJwfYOykRwsfdYtDDB0ZmBlL0l3ldh8bZ_BCZ-g",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ecommerce_url}}/user/all?pageSize=10&page=2",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"user",
+												"all"
+											],
+											"query": [
+												{
+													"key": "pageSize",
+													"value": "10"
+												},
+												{
+													"key": "page",
+													"value": "2"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Address",
+							"item": [
+								{
+									"name": "Create",
+									"request": {
+										"method": "POST",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiJkNGZlYThiYi00ODY1LTQxZWEtYWE0Ni02MWY5MmY4MTZlOTUiLCJldmVudF9pZCI6ImEwZjE2NjEyLWIyZmYtNDhlNC04YTI3LWRhZTgwYWYxZWNlZSIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4gb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzQxMDM4Njg0LCJleHAiOjE3NDExMjUwODQsImlhdCI6MTc0MTAzODY4NCwianRpIjoiM2I1MzM0ODktN2ZjNC00NWZiLWJmMzItMmQzMDNiNTkzYjc5IiwidXNlcm5hbWUiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MifQ.WGDpdegHze_Zx__DNHQfkjkNLIAocOleHZkyX1LZoxG880VzeImf58nuM00HC1m-wVAI7ViII45_f1X6PAAnLTWh-LN13V_DryGORWwxn7eswrh4MYzar2euvIURtp8UFiIT6GJuMAKL7favYUtOHUUOcsqct3GqmNZ2KtLENV0p1QQnoHk5Rxoz4CRPRhVQULdJCQeFPfZ7F0V1sN4wjuvCG0f-EgWzHlYFFTF1tldbKYS1wTQ_trlwgYjcn5aWLgZoRNa1i2rbZ07o8dVRSU99VxdSGiQ6v-QF3sh28bj9q3_0N04SCngeG-do9KnDcqnFFZxILx2yfUyqIoTBXA",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"title\": \"Home location\",\r\n    \"street\": \"Geo Villas\",\r\n    \"city\": \"Mexico\",\r\n    \"state\": \"Estado de MExico\",\r\n    \"postalCode\": \"18665\",\r\n    \"phone\": \"+52 5555555500\",\r\n    \"userName\": \"Jose Luis Rojas Gomez\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ecommerce_url}}/address",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"address"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete",
+									"request": {
+										"method": "DELETE",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI0NGI4NjRiOC03MDExLTcwODktYzk5My1lODc2NWY0NDY2ZmMiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiIwZDFlNmUzYy00ZGE3LTRmZTctOGJlNS00Mzc0NmJmYmZkOGIiLCJldmVudF9pZCI6IjYzMzUzZWI4LWQ3NmItNDA2My1iZTQ0LTEwMWE3ODlmY2EwMSIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4gb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzQxMDQ0ODM5LCJleHAiOjE3NDExMzEyMzksImlhdCI6MTc0MTA0NDgzOSwianRpIjoiZmNkMDg0OGQtZGJiYS00M2NjLTkyZTctZDcwOTRjYmRiMzAzIiwidXNlcm5hbWUiOiI0NGI4NjRiOC03MDExLTcwODktYzk5My1lODc2NWY0NDY2ZmMifQ.YAL98c102ym_WfAhgXyzq80ewpMuk4f0kAlz6EYurML_BBLDWfogfSQXldQn-tpP8-xbpCYw5NxbksMEgiAE4af_GmS3lieVy6Vi9tBAls4dZ-MxfJ67JNs43Yb-NVPcRNXAlsNBAxZXkyYvEnPRiSxTaBNDsD8aZ22BfluqAlOGo8C8O8K9ubliye2ZlrSuiGLg_F3tZ_6mJ_xzHollS6Z-4fqRnXRvBs1j_AOzxezIFip7SLJCsedwrNvACTIg2r0q1HdW9slotv8RSe2tuWBFIrnSeAdc4dgJMDZZK-Uxe6E1IQ8wQp8sfHFQ1VGUiFsjH68DtGxl-bhMItxGOw",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{ecommerce_url}}/address/1",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"address",
+												"1"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiI0NGI4NjRiOC03MDExLTcwODktYzk5My1lODc2NWY0NDY2ZmMiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiIwZDFlNmUzYy00ZGE3LTRmZTctOGJlNS00Mzc0NmJmYmZkOGIiLCJldmVudF9pZCI6IjYzMzUzZWI4LWQ3NmItNDA2My1iZTQ0LTEwMWE3ODlmY2EwMSIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4gb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzQxMDQ0ODM5LCJleHAiOjE3NDExMzEyMzksImlhdCI6MTc0MTA0NDgzOSwianRpIjoiZmNkMDg0OGQtZGJiYS00M2NjLTkyZTctZDcwOTRjYmRiMzAzIiwidXNlcm5hbWUiOiI0NGI4NjRiOC03MDExLTcwODktYzk5My1lODc2NWY0NDY2ZmMifQ.YAL98c102ym_WfAhgXyzq80ewpMuk4f0kAlz6EYurML_BBLDWfogfSQXldQn-tpP8-xbpCYw5NxbksMEgiAE4af_GmS3lieVy6Vi9tBAls4dZ-MxfJ67JNs43Yb-NVPcRNXAlsNBAxZXkyYvEnPRiSxTaBNDsD8aZ22BfluqAlOGo8C8O8K9ubliye2ZlrSuiGLg_F3tZ_6mJ_xzHollS6Z-4fqRnXRvBs1j_AOzxezIFip7SLJCsedwrNvACTIg2r0q1HdW9slotv8RSe2tuWBFIrnSeAdc4dgJMDZZK-Uxe6E1IQ8wQp8sfHFQ1VGUiFsjH68DtGxl-bhMItxGOw",
+												"type": "text"
+											}
+										],
+										"url": {
+											"raw": "{{ecommerce_url}}/address",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"address"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update",
+									"request": {
+										"method": "PUT",
+										"header": [
+											{
+												"key": "Authorization",
+												"value": "eyJraWQiOiI5RDdRdndqY0RmOStob0Y3eTUwMzBYS0c5Y0p6akRtY0Q1elFvVFRoY0h3PSIsImFsZyI6IlJTMjU2In0.eyJzdWIiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAudXMtZWFzdC0xLmFtYXpvbmF3cy5jb21cL3VzLWVhc3QtMV9JS3ZqR09teXoiLCJ2ZXJzaW9uIjoyLCJjbGllbnRfaWQiOiIzcWZjMHY1cGxvdjExNG43MDgydmJ1NjhhNCIsIm9yaWdpbl9qdGkiOiJkNGZlYThiYi00ODY1LTQxZWEtYWE0Ni02MWY5MmY4MTZlOTUiLCJldmVudF9pZCI6ImEwZjE2NjEyLWIyZmYtNDhlNC04YTI3LWRhZTgwYWYxZWNlZSIsInRva2VuX3VzZSI6ImFjY2VzcyIsInNjb3BlIjoiYXdzLmNvZ25pdG8uc2lnbmluLnVzZXIuYWRtaW4gb3BlbmlkIGVtYWlsIiwiYXV0aF90aW1lIjoxNzQxMDM4Njg0LCJleHAiOjE3NDExMjUwODQsImlhdCI6MTc0MTAzODY4NCwianRpIjoiM2I1MzM0ODktN2ZjNC00NWZiLWJmMzItMmQzMDNiNTkzYjc5IiwidXNlcm5hbWUiOiIwNDM4ODRmOC1iMGExLTcwNGItOTczYy1iYjgzMTVjN2Q0N2MifQ.WGDpdegHze_Zx__DNHQfkjkNLIAocOleHZkyX1LZoxG880VzeImf58nuM00HC1m-wVAI7ViII45_f1X6PAAnLTWh-LN13V_DryGORWwxn7eswrh4MYzar2euvIURtp8UFiIT6GJuMAKL7favYUtOHUUOcsqct3GqmNZ2KtLENV0p1QQnoHk5Rxoz4CRPRhVQULdJCQeFPfZ7F0V1sN4wjuvCG0f-EgWzHlYFFTF1tldbKYS1wTQ_trlwgYjcn5aWLgZoRNa1i2rbZ07o8dVRSU99VxdSGiQ6v-QF3sh28bj9q3_0N04SCngeG-do9KnDcqnFFZxILx2yfUyqIoTBXA",
+												"type": "text"
+											}
+										],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"title\": \"Work location\",\r\n    \"street\": \"Reforma centro 2236\",\r\n    \"city\": \"Mexico\",\r\n    \"state\": \"CDMX\",\r\n    \"postalCode\": \"08500\",\r\n    \"phone\": \"+52 5555555500\",\r\n    \"userName\": \"Jose Luis Rojas Gomez\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{ecommerce_url}}/address/2",
+											"host": [
+												"{{ecommerce_url}}"
+											],
+											"path": [
+												"address",
 												"2"
 											]
 										}
