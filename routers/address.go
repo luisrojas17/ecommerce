@@ -10,6 +10,7 @@ import (
 	"github.com/luisrojas17/ecommerce/models"
 )
 
+// Create an address in database. The address to aupdate must be related to the authenticated user.
 func CreateAddress(body string, userId string) (int, string) {
 
 	fmt.Println("Starting to create address for user id [" + userId + "].")
@@ -58,6 +59,7 @@ func CreateAddress(body string, userId string) (int, string) {
 
 }
 
+// Update the address in database. The address to aupdate must be related to the authenticated user.
 func UpdateAddress(body string, userId string, idAddress int) (int, string) {
 
 	strIdAddress := strconv.Itoa(idAddress)
@@ -75,7 +77,7 @@ func UpdateAddress(body string, userId string, idAddress int) (int, string) {
 	// the user id authenticated can only update his address.
 	address.Id = idAddress
 	var exist bool
-	exist, err = db.ExistAddress(userId, address.Id)
+	exist, err = db.ExistAddress(address.Id, userId)
 
 	if !exist {
 		if err != nil {
@@ -92,5 +94,41 @@ func UpdateAddress(body string, userId string, idAddress int) (int, string) {
 	}
 
 	return http.StatusOK, " The address id [" + strIdAddress + "] was updated for user id [" + userId + "]."
+
+}
+
+// Update the address in database. The address to aupdate must be related to the authenticated user.
+func DeleteAddress(userId string, id int) (int, string) {
+
+	if id == 0 {
+		return http.StatusPreconditionFailed, "To delete any product you must specify the id since it is mandatory and it must be greater than 0."
+	}
+
+	// It is validate the address id for authenticate user id. This validation make sure that
+	// the user id authenticated can only update his address.
+	strIdAddress := strconv.Itoa(id)
+
+	exist, err := db.ExistAddress(id, userId)
+
+	if !exist {
+		if err != nil {
+			return http.StatusBadRequest, "It was an error to search address id [" + strIdAddress + "] for user id [" + userId + "]. " + err.Error()
+		}
+
+		return http.StatusNotFound, "The address id [" + strIdAddress + "] was not found for user id [" + userId + "]."
+
+	}
+
+	isDeleted, err := db.DeleteAddress(id)
+	if err != nil {
+		return http.StatusBadRequest, "It was an error to delete address [id: " + strIdAddress + "].\n" + err.Error()
+	}
+
+	if !isDeleted {
+		return http.StatusBadRequest, "Address Id: " + strIdAddress + " does not exist. So, it could not be deleted."
+
+	}
+
+	return http.StatusOK, "Address Id: " + strIdAddress + " was deleted successfully."
 
 }

@@ -126,9 +126,9 @@ func UpdateProduct(product models.Product) error {
 // to match to parameter id provided.
 func DeleteProduct(id int) (bool, error) {
 
-	nId := strconv.Itoa(id)
+	strId := strconv.Itoa(id)
 
-	fmt.Println("Starting to delete product by id [" + nId + "] in database...")
+	fmt.Println("Starting to delete product by id [" + strId + "] in database...")
 
 	err := Connect()
 
@@ -138,7 +138,7 @@ func DeleteProduct(id int) (bool, error) {
 
 	defer Close()
 
-	statement := "DELETE FROM products WHERE Prod_Id = " + nId
+	statement := "DELETE FROM products WHERE Prod_Id = " + strId
 
 	var result sql.Result
 	result, err = Connection.Exec(statement)
@@ -155,10 +155,10 @@ func DeleteProduct(id int) (bool, error) {
 	}
 
 	if rowsAffected > 0 {
-		fmt.Println("Product id [" + nId + "] was delete sucessfully. There was affected [" + strconv.Itoa(int(rowsAffected)) + "] rows.")
+		fmt.Println("Product id [" + strId + "] was delete sucessfully. There was affected [" + strconv.Itoa(int(rowsAffected)) + "] rows.")
 		return true, nil
 	} else {
-		fmt.Println("It was not possible to delete product id [" + nId + "]. There was affected [0] rows.")
+		fmt.Println("It was not possible to delete product id [" + strId + "]. There was affected [0] rows.")
 		return false, nil
 	}
 

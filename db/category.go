@@ -84,13 +84,13 @@ func UpdateCategory(category models.Category) error {
 	return nil
 }
 
-// This function delete a category in database. The product to be deleted has
+// This function delete a category in database. The category to be deleted has
 // to match to parameter id provided.
 func DeleteCategory(id int) (bool, error) {
 
-	nId := strconv.Itoa(id)
+	strId := strconv.Itoa(id)
 
-	fmt.Println("Starting to delete category by id [" + nId + "] in database...")
+	fmt.Println("Starting to delete category by id [" + strId + "] in database...")
 
 	err := Connect()
 
@@ -100,7 +100,7 @@ func DeleteCategory(id int) (bool, error) {
 
 	defer Close()
 
-	statement := "DELETE FROM category where Categ_Id = " + nId
+	statement := "DELETE FROM category where Categ_Id = " + strId
 
 	var result sql.Result
 	result, err = Connection.Exec(statement)
@@ -109,6 +109,7 @@ func DeleteCategory(id int) (bool, error) {
 		return false, err
 	}
 
+	// We validated if there is any row affected.
 	rowsAffected, err2 := result.RowsAffected()
 	if err2 != nil {
 		fmt.Println(err2.Error())
@@ -116,10 +117,10 @@ func DeleteCategory(id int) (bool, error) {
 	}
 
 	if rowsAffected > 0 {
-		fmt.Println("Category id [" + nId + "] was delete sucessfully. There was affected [" + strconv.Itoa(int(rowsAffected)) + "] rows.")
+		fmt.Println("Category id [" + strId + "] was delete sucessfully. There was affected [" + strconv.Itoa(int(rowsAffected)) + "] rows.")
 		return true, nil
 	} else {
-		fmt.Println("It was not possible to delete category id [" + nId + "]. There was affected [0] rows.")
+		fmt.Println("It was not possible to delete category id [" + strId + "]. There was affected [0] rows.")
 		return false, nil
 	}
 

@@ -83,17 +83,18 @@ func DeleteProduct(userId string, id int) (int, string) {
 		return http.StatusBadRequest, msg
 	}
 
+	strId := strconv.Itoa(id)
 	isDeleted, err := db.DeleteProduct(id)
 	if err != nil {
-		return http.StatusBadRequest, "It was an error to delete product [id: " + strconv.Itoa(id) + "].\n" + err.Error()
+		return http.StatusBadRequest, "It was an error to delete product [id: " + strId + "].\n" + err.Error()
 	}
 
 	if !isDeleted {
-		return http.StatusBadRequest, "Product Id: " + strconv.Itoa(id) + " does not exist. So, it could not be deleted."
+		return http.StatusBadRequest, "Product Id: " + strId + " does not exist. So, it could not be deleted."
 
 	}
 
-	return http.StatusOK, "Product Id: " + strconv.Itoa(id) + " was deleted successfully."
+	return http.StatusOK, "Product Id: " + strId + " was deleted successfully."
 }
 
 // This function get all products in a paged way.

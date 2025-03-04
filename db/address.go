@@ -11,6 +11,7 @@ import (
 	"github.com/luisrojas17/ecommerce/models"
 )
 
+// Create an address in database. The address to create is related to the authenticated user.
 func CreateAddress(address models.Address, userId string) (int64, error) {
 
 	fmt.Println("Starting to insert address for user [" + userId + "] in database...")
@@ -45,6 +46,7 @@ func CreateAddress(address models.Address, userId string) (int64, error) {
 
 }
 
+// Update the address in database. The address to aupdate must be related to the authenticated user.
 func UpdateAddress(address models.Address) error {
 
 	fmt.Println("Starting to update address in database...")
@@ -106,7 +108,7 @@ func UpdateAddress(address models.Address) error {
 
 }
 
-func ExistAddress(userId string, id int) (bool, error) {
+func ExistAddress(id int, userId string) (bool, error) {
 
 	strIdAddress := strconv.Itoa(id)
 
@@ -142,4 +144,46 @@ func ExistAddress(userId string, id int) (bool, error) {
 	fmt.Println("Address id [" + strIdAddress + "] was not found for user [" + userId + "].")
 
 	return false, nil
+}
+
+// This function delete an address in database. The address to be deleted has
+// to match to parameter id provided.
+func DeleteAddress(id int) (bool, error) {
+
+	strId := strconv.Itoa(id)
+
+	fmt.Println("Starting to delete address by id [" + strId + "] in database...")
+
+	err := Connect()
+
+	if err != nil {
+		return false, err
+	}
+
+	defer Close()
+
+	statement := "DELETE FROM addresses where Add_Id = " + strId
+
+	var result sql.Result
+	result, err = Connection.Exec(statement)
+	if err != nil {
+		fmt.Println(err.Error())
+		return false, err
+	}
+
+	// We validated if there is any row affected.
+	rowsAffected, err2 := result.RowsAffected()
+	if err2 != nil {
+		fmt.Println(err2.Error())
+		return false, err2
+	}
+
+	if rowsAffected > 0 {
+		fmt.Println("Address id [" + strId + "] was delete sucessfully. There was affected [" + strconv.Itoa(int(rowsAffected)) + "] rows.")
+		return true, nil
+	} else {
+		fmt.Println("It was not possible to delete address id [" + strId + "]. There was affected [0] rows.")
+		return false, nil
+	}
+
 }
