@@ -164,6 +164,8 @@ func DeleteAddress(id int) (bool, error) {
 
 	statement := "DELETE FROM addresses where Add_Id = " + strId
 
+	fmt.Println("Statement to execute: ", statement)
+
 	var result sql.Result
 	result, err = Connection.Exec(statement)
 	if err != nil {
@@ -186,4 +188,68 @@ func DeleteAddress(id int) (bool, error) {
 		return false, nil
 	}
 
+}
+
+func GetAddresses(userId string) ([]models.Address, error) {
+
+	fmt.Println("Starting to get address for user id [" + userId + "] in database...")
+
+	// We define an ampty collection
+	addresses := []models.Address{}
+
+	err := Connect()
+
+	if err != nil {
+		return addresses, err
+	}
+
+	defer Close()
+
+	statement := "SELECT Add_Id, Add_Address, Add_City, Add_State, Add_PostalCode, Add_Phone, Add_Title, Add_Name FROM addresses "
+
+	fmt.Println("Statement to execute: ", statement)
+
+	var rows *sql.Rows
+	rows, err = Connection.Query(statement)
+	if err != nil {
+		return addresses, err
+	}
+
+	defer rows.Close()
+
+	// We process the results
+	for rows.Next() {
+
+		var address models.Address
+		var id sql.NullInt16
+		var street sql.NullString
+		var city sql.NullString
+		var state sql.NullString
+		var postalCode sql.NullString
+		var phone sql.NullString
+		var title sql.NullString
+		var userName sql.NullString
+
+		// We assign the values through variable's pointer.
+		err := rows.Scan(&id, &street, &city, &state, &postalCode, &phone, &title, &userName)
+		if err != nil {
+			return addresses, err
+		}
+
+		address.Id = int(id.Int16)
+		address.Street = street.String
+		address.City = city.String
+		address.State = state.String
+		address.PostalCode = postalCode.String
+		address.Phone = phone.String
+		address.Title = title.String
+		address.UserName = userName.String
+
+		addresses = append(addresses, address)
+
+	}
+
+	fmt.Printf("\nThere were found [%d] addresses for user id [%s].\n", len(addresses), userId)
+
+	return addresses, nil
 }

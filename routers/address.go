@@ -132,3 +132,19 @@ func DeleteAddress(userId string, id int) (int, string) {
 	return http.StatusOK, "Address Id: " + strIdAddress + " was deleted successfully."
 
 }
+
+func GetAddresses(userId string) (int, string) {
+
+	addresses, err := db.GetAddresses(userId)
+	if err != nil {
+		return http.StatusBadRequest, "It was an error to get addresses list for user id [" + userId + "]. " + err.Error()
+	}
+
+	var jsonAddresses []byte
+	jsonAddresses, err = json.Marshal(addresses)
+	if err != nil {
+		return http.StatusBadRequest, "It was an error to convert addresses list to JSON format.\n" + err.Error()
+	}
+
+	return http.StatusOK, string(jsonAddresses)
+}

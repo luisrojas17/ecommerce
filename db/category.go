@@ -27,6 +27,8 @@ func CreateCategory(category models.Category) (int64, error) {
 
 	statement := "INSERT INTO category (Categ_Name, Categ_Path) VALUES('" + category.Name + "', '" + category.Path + "')"
 
+	fmt.Println("Statement to execute: ", statement)
+
 	var result sql.Result
 	result, err = Connection.Exec(statement)
 	if err != nil {
@@ -73,6 +75,8 @@ func UpdateCategory(category models.Category) error {
 
 	statement += " WHERE Categ_Id = '" + strconv.Itoa(category.Id) + "'"
 
+	fmt.Println("Statement to execute: ", statement)
+
 	_, err = Connection.Exec(statement)
 	if err != nil {
 		fmt.Println(err.Error())
@@ -101,6 +105,8 @@ func DeleteCategory(id int) (bool, error) {
 	defer Close()
 
 	statement := "DELETE FROM category where Categ_Id = " + strId
+
+	fmt.Println("Statement to execute: ", statement)
 
 	var result sql.Result
 	result, err = Connection.Exec(statement)
@@ -132,9 +138,9 @@ func DeleteCategory(id int) (bool, error) {
 // in the database.
 func GetCategories(id int, slug string) ([]models.Category, error) {
 
-	nId := strconv.Itoa(id)
+	strId := strconv.Itoa(id)
 
-	fmt.Println("Starting to get categories by [id:" + nId + " and path: " + slug + "] in database...")
+	fmt.Println("Starting to get categories by [id:" + strId + " and path: " + slug + "] in database...")
 
 	// Define categies arrays.
 	var categories []models.Category

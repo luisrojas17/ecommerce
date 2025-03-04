@@ -244,6 +244,7 @@ func Stock(body string, path string, method string, userId string, id int, reque
 
 }
 
+// This API handled all CRUD operations related to category table.
 func Address(body string, path string, method string, userId string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 
 	switch method {
@@ -253,6 +254,8 @@ func Address(body string, path string, method string, userId string, id int, req
 		return routers.UpdateAddress(body, userId, id)
 	case "DELETE":
 		return routers.DeleteAddress(userId, id)
+	case "GET":
+		return routers.GetAddresses(userId)
 	default:
 		fmt.Println("HTTP Method: [" + method + "] not found.")
 
