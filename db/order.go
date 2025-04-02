@@ -135,21 +135,17 @@ func GetOrders(userId string, dateFrom string, dateTo string, orderId int, page 
 	for rows.Next() {
 		var order models.Order
 
-		// To handle time string
-		var orderDate sql.NullTime
-
 		// To defined as null values becausae all of these variables
 		// are optional values in the database schema.
 		var total sql.NullFloat64
 
 		// To set mandatory data for each order's property through a pointer
-		err := rows.Scan(&order.Id, &order.UserUuid, &order.AddressId, &orderDate, &total)
+		err := rows.Scan(&order.Id, &order.UserUuid, &order.AddressId, &order.Date, &total)
 		if err != nil {
 			return orders, err
 		}
 
 		// To handle null values in temp variables
-		order.Date = orderDate.Time.String()
 		order.Total = total.Float64
 
 		// to get orders_detail
