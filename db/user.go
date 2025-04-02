@@ -192,6 +192,7 @@ func GetUsers(page int, pageSize int) (models.PageableUsers, error) {
 		var lastName sql.NullString
 		var updateAt sql.NullTime
 
+		// To set data to each user's property through a pointer
 		err := rows.Scan(&user.Uuid, &user.Email, &firstName, &lastName, &user.Status, &user.CreatedAt, &updateAt)
 
 		if err != nil {
@@ -203,7 +204,7 @@ func GetUsers(page int, pageSize int) (models.PageableUsers, error) {
 		user.LastName = lastName.String
 		user.UpdatedAt = updateAt.Time.String()
 
-		// We add new item to array/slice categories
+		// To add new item to array/slice users
 		users = append(users, user)
 	}
 

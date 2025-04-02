@@ -58,3 +58,145 @@ func CreateOrder(order models.Order) (int64, error) {
 
 	return lastInsertId, nil
 }
+
+func GetOrders(userId string, dateFrom string, dateTo string, orderId int, page int, pageSize int) ([]models.Order, error) {
+
+	fmt.Println("Starting to get order in database...")
+
+	var orders []models.Order
+
+	statement := "SELECT Order_Id, Order_UserUUID, Order_AddId, Order_Date, Order_Total FROM orders "
+
+	// Fix this query because any user could get any orderId even if that order is not related to the user.
+	if orderId > 0 {
+		statement += " WHERE Order_Id = " + strconv.Itoa(orderId)
+	} else {
+
+		if page == 0 {
+			page = 1
+		}
+
+		// To handle in the better way time in dates.
+		// I mean, from the beginning of the day to the end of the day
+		if len(dateTo) == 10 {
+			dateTo += "23:59:59"
+		}
+
+		var where string
+
+		// If we have valid dates, we will add them to where clause
+		if len(dateFrom) > 0 && len(dateTo) > 0 {
+			where += " WHERE Order_Date BETWEEN '" + dateFrom + "' AND '" + dateTo + "'"
+		}
+
+		// The user will always be there because the userId is gotten from token.
+		// To make sure that the orders returned are related to the current user.
+		var filterUserId string = " OrderUserUUID = '" + userId + "'"
+
+		// We add the filter userId
+		if len(where) > 0 {
+			where += " AND " + filterUserId
+		} else {
+			where += " WHERE " + filterUserId
+		}
+
+		// Limit will be equals pageSize and define maximum records to get.
+		limitAndOffset := " LIMIT " + strconv.Itoa(pageSize)
+
+		// On the other hand, offset will be the record number where the query will start to get records.
+		var offset int = (page * pageSize) - pageSize
+
+		if offset > 0 {
+			limitAndOffset += " OFFSET " + strconv.Itoa(offset)
+		}
+
+		statement += where + limitAndOffset
+
+	}
+
+	fmt.Println(statement)
+
+	err := Connect()
+
+	if err != nil {
+		return orders, err
+	}
+
+	defer Close()
+
+	var rows *sql.Rows
+	rows, err = Connection.Query(statement)
+	if err != nil {
+		return orders, err
+	}
+
+	defer rows.Close()
+
+	for rows.Next() {
+		var order models.Order
+
+		// To handle time string
+		var orderDate sql.NullTime
+
+		// To defined as null values becausae all of these variables
+		// are optional values in the database schema.
+		var total sql.NullFloat64
+
+		// To set mandatory data for each order's property through a pointer
+		err := rows.Scan(&order.Id, &order.UserUuid, &order.AddressId, &orderDate, &total)
+		if err != nil {
+			return orders, err
+		}
+
+		// To handle null values in temp variables
+		order.Date = orderDate.Time.String()
+		order.Total = total.Float64
+
+		// to get orders_detail
+		var rowsDetails *sql.Rows
+		statement := "SELECT OD_Id, OD_ProdId, OD_Quantity, OD_Price FROM orders_detail WHERE OD_OrderID = " + strconv.Itoa(order.Id)
+
+		rowsDetails, err = Connection.Query(statement)
+		if err != nil {
+			return orders, err
+		}
+
+		for rowsDetails.Next() {
+
+			// These variables do not require to handle null values because all of these
+			// are primary and foreing key in the database schema
+			var detailId int64
+			var productId int64
+
+			// On the other hand, next variables have to be defined as null values becausae all of these
+			// are optional values in the database schema.
+			var quantity sql.NullInt64
+			var price sql.NullFloat64
+
+			err = rowsDetails.Scan(&detailId, &productId, &quantity, &price)
+			if err != nil {
+				return orders, err
+			}
+
+			var details models.OrderDetails
+			details.Id = int(detailId)
+			details.ProductId = int(productId)
+			details.Quantity = int(quantity.Int64)
+			details.Price = price.Float64
+
+			// To add each ordder's detail to the order gotten from database
+			order.Details = append(order.Details, details)
+
+		}
+
+		// To add new item to array/slice orders
+		orders = append(orders, order)
+
+		rowsDetails.Close()
+	}
+
+	fmt.Println("There were found [" + strconv.Itoa(len(orders)) + "] orders.")
+
+	return orders, nil
+
+}

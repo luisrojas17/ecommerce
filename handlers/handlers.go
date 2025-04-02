@@ -268,9 +268,14 @@ func Orders(body string, path string, method string, userId string, id int, requ
 
 	switch method {
 
+	case "GET":
+		return routers.GetOrders(userId, request)
 	case "POST":
 		return routers.CreateOrder(body, userId)
+	default:
+		fmt.Println("HTTP Method: [" + method + "] not found.")
+
+		return http.StatusBadRequest, METHOD_INVALID
 	}
 
-	return http.StatusBadRequest, METHOD_INVALID
 }
