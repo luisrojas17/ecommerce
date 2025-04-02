@@ -72,3 +72,20 @@ type Address struct {
 	Phone      string `json:"phone"`
 	UserName   string `json:"userName"`
 }
+
+type Order struct {
+	Id        int            `json:"id"`
+	UserUuid  string         `json:"userUuid"`
+	AddressId int            `json:"addressId"`
+	Date      string         `json:"date"`
+	Total     float64        `json:"total"`
+	Details   []OrderDetails `json:"details"`
+}
+
+type OrderDetails struct {
+	Id        int     `json:"id"`
+	OrderId   int     `json:"orderId"`
+	ProductId int     `json:"productId"`
+	Quantity  int     `json:"quantity"`
+	Price     float64 `json:"price"`
+}

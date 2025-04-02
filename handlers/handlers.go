@@ -266,5 +266,11 @@ func Address(body string, path string, method string, userId string, id int, req
 
 func Orders(body string, path string, method string, userId string, id int, request events.APIGatewayV2HTTPRequest) (int, string) {
 
+	switch method {
+
+	case "POST":
+		return routers.CreateOrder(body, userId)
+	}
+
 	return http.StatusBadRequest, METHOD_INVALID
 }
