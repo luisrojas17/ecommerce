@@ -29,8 +29,10 @@ func CreateOrder(order models.Order) (int64, error) {
 	}
 
 	defer func() {
+		// It does not matter if commit was completed.
+		// If the commit was completed the Rollback will thrown an error but it is ignored.
+		// On the other hand, in any case the Rollback will be completed
 		_ = tx.Rollback()
-		fmt.Println("Making Rollback....")
 	}()
 
 	// To save order.
