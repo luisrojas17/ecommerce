@@ -55,7 +55,7 @@ func CreateAddress(body string, userId string) (int, string) {
 	}
 
 	// Check if it is better using status code http.StatusCreated
-	return http.StatusOK, "{id: " + strconv.Itoa(int(result)) + "}"
+	return http.StatusOK, "{\"id\": " + strconv.Itoa(int(result)) + "}"
 
 }
 

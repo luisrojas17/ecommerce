@@ -67,15 +67,16 @@ func GetUsers(userId string, request events.APIGatewayV2HTTPRequest) (int, strin
 	var page, pageSize int
 	var err error
 
-	page, err = strconv.Atoi(request.QueryStringParameters["page"])
-	if err != nil || page == 0 {
-		page = 1
-	}
+	// Page and pageSize are defined in persistence player.
+	page, _ = strconv.Atoi(request.QueryStringParameters["page"])
+	//if err != nil || page == 0 {
+	//	page = 1
+	//}
 
-	pageSize, err = strconv.Atoi(request.QueryStringParameters["pageSize"])
-	if err != nil || pageSize > 25 {
-		pageSize = 25
-	}
+	pageSize, _ = strconv.Atoi(request.QueryStringParameters["pageSize"])
+	//if err != nil || pageSize > 25 {
+	//	pageSize = 25
+	//}
 
 	isAdmin, msg := db.IsAdmin(userId)
 	if !isAdmin {

@@ -1,6 +1,7 @@
 package db
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	"strconv"
@@ -12,6 +13,7 @@ func CreateOrder(order models.Order) (int64, error) {
 
 	fmt.Println("Starting to insert order in database...")
 
+	// To connect to database
 	err := Connect()
 
 	if err != nil {
@@ -20,14 +22,28 @@ func CreateOrder(order models.Order) (int64, error) {
 
 	defer Close()
 
+	// To start the transaction
+	tx, err := Connection.BeginTx(context.Background(), nil)
+	if err != nil {
+		return 0, err
+	}
+
+	defer func() {
+		_ = tx.Rollback()
+		fmt.Println("Making Rollback....")
+	}()
+
 	// To save order.
 	statement := "INSERT INTO orders (Order_UserUUID, Order_Total, Order_AddId) VALUES('"
 
 	statement += order.UserUuid + "'," + strconv.FormatFloat(order.Total, 'f', -1, 64) + "," + strconv.Itoa(order.AddressId) + ")"
 
+	fmt.Println(statement)
+
 	// result contains the last insert id and total rows affected and
 	var result sql.Result
-	result, err = Connection.Exec(statement)
+	//result, err = Connection.Exec(statement)
+	result, err = tx.ExecContext(context.Background(), statement)
 
 	if err != nil {
 		fmt.Println(err.Error())
@@ -47,11 +63,17 @@ func CreateOrder(order models.Order) (int64, error) {
 
 		fmt.Println(statement)
 
-		_, err = Connection.Exec(statement)
+		//_, err = Connection.Exec(statement)
+		_, err = tx.ExecContext(context.Background(), statement)
 		if err != nil {
 			fmt.Println(err.Error())
 			return 0, err
 		}
+	}
+
+	err = tx.Commit()
+	if err != nil {
+		return 0, fmt.Errorf("It was an error to commit. %w", err)
 	}
 
 	fmt.Println("Order [" + strconv.Itoa(int(lastInsertId)) + "] was inserted with all its details.")
@@ -76,10 +98,19 @@ func GetOrders(userId string, dateFrom string, dateTo string, orderId int, page 
 			page = 1
 		}
 
+		// To fix this assignment. If pagesize is not defined the value can be getting from environemnt variable.
+		if pageSize == 0 {
+			pageSize = 10
+		}
+
 		// To handle in the better way time in dates.
 		// I mean, from the beginning of the day to the end of the day
+		if len(dateFrom) == 10 {
+			dateFrom += " 00:00:00"
+		}
+
 		if len(dateTo) == 10 {
-			dateTo += "23:59:59"
+			dateTo += " 23:59:59"
 		}
 
 		var where string
@@ -91,7 +122,7 @@ func GetOrders(userId string, dateFrom string, dateTo string, orderId int, page 
 
 		// The user will always be there because the userId is gotten from token.
 		// To make sure that the orders returned are related to the current user.
-		var filterUserId string = " OrderUserUUID = '" + userId + "'"
+		var filterUserId string = " Order_UserUUID = '" + userId + "'"
 
 		// We add the filter userId
 		if len(where) > 0 {

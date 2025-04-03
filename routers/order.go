@@ -94,6 +94,11 @@ func GetOrders(userId string, request events.APIGatewayV2HTTPRequest) (int, stri
 		return http.StatusBadGateway, "It was an error to get orders with next parameters: [dateFrom: " + dateFrom + ", dateTo: " + dateTo + "]. Error: " + err.Error()
 	}
 
+	if len(result) == 0 {
+		return http.StatusNoContent, "There were not orders related to user id: " + userId + "."
+	}
+
+	// Convert model to JSON byte array
 	Order, err2 := json.Marshal(result)
 	if err2 != nil {
 		return http.StatusBadGateway, "It was an error to convert Order model to JSON string. Error: " + err2.Error()

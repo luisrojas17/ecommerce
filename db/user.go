@@ -132,6 +132,15 @@ func GetUsers(page int, pageSize int) (models.PageableUsers, error) {
 
 	defer Close()
 
+	if page == 0 {
+		page = 1
+	}
+
+	// To fix this assignment. If pagesize is not defined the value can be getting from environemnt variable.
+	if pageSize == 0 {
+		pageSize = 10
+	}
+
 	var offset int = (page * pageSize) - pageSize
 	var countStatement string = "SELECT count(*) as records FROM users"
 	var statement string = "SELECT * from users LIMIT " + strconv.Itoa(pageSize)
